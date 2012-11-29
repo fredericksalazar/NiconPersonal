@@ -53,7 +53,7 @@ public class Nicon{
                         UIManager.setLookAndFeel(new NimbusLookAndFeel());
                         boolean estado = NiconSystemAdmin.VerifyStateSystem();
                         System.out.println("Verificando estado del sistema ..."); 
-                            if (estado!=true) {
+                            if (!estado) {
                                    System.out.println("Iniciando activación de "+GlobalConfigSystem.getTitleAplication());
                                    GuiActivation activar = new GuiActivation();
                                    activar.setLocationRelativeTo(null);
@@ -61,8 +61,8 @@ public class Nicon{
                            } else {
                                   System.out.println("Iniciando componentes de "+GlobalConfigSystem.getTitleAplication());
                                   NiconUpdate.VerifySystemVersion();
-                                  NiconLoginSystem verifi = new NiconLoginSystem(NiconAdministrator.GetDataAdmin());
-                                  verifi.setVisible(true);
+                                  NiconLoginSystem Login = new NiconLoginSystem(NiconAdministrator.GetDataAdmin());
+                                  Login.setVisible(true);
                            }
                     }
                     catch (Exception ex){

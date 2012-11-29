@@ -45,7 +45,7 @@ public class DataContact {
         try{
             NiContactDAO=new NiContactsDAO();
             ListContacts=NiContactDAO.getAllContact();           
-            System.out.println("El Array de NiContacts ha sido cargado exitosamente total Size: "+ListContacts.size());
+            System.out.println("DataContact ha iniciado correctamente. Size = "+ListContacts.size());
         }catch(Exception e){
            System.out.println("Ocurrio un error en DataContact.init() Detail ERROR \n"+e+" \n"+e.getCause());         
         }

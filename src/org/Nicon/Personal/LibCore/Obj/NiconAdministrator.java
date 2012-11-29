@@ -109,27 +109,4 @@ public class NiconAdministrator {
         }
         return admin;
     }
-
-    /*
-     * Este metodo es usado para la verificacion del sistema, en caso de tener un administrador en la 
-     * NiconPersonalDB retorna su valor de configuracion que seria 0, si no hay un administrador registrado
-     * retornarìa -1
-     */
-    public static int VerifyAdministratorState() {
-        try {
-            sentence = "select * from administrador;";
-            DataAdmin = NiConection.RestoreDataSentence(sentence);
-            if (DataAdmin.next()) {
-                StateAdministrator = 0;
-            } else {
-                StateAdministrator = -1;
-            }
-            sentence = null;
-            DataAdmin.close();
-            NiConection.DisconectDB();
-        } catch (Exception e) {
-            System.out.println("Ocurrio un Error en Administrador.VerifyAdministratorState() DetalError:\n" + e);
-        }
-        return StateAdministrator;
-    }
 }

@@ -1,10 +1,5 @@
 package org.Nicon.Personal.LibCore.Sbin;
 
-import org.Nicon.Personal.LibCore.Sbin.NiconPersonalData;
-import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
-import org.Nicon.Personal.LibCore.Sbin.NiConection;
-import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
-
 public class NiconUpdate{
   
   public static String CurrentNameAplication =  GlobalConfigSystem.getNameAplication();

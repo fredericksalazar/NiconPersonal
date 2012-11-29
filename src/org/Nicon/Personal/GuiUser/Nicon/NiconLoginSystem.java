@@ -33,24 +33,20 @@ import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
 public class NiconLoginSystem extends JDialog implements ActionListener {
 
     private NiconAdministrator DataAdmin;
-    
     private JPanel LoginPanel;
     private JLabel LoginTitle;
     private JLabel NameAdmin;
     private JLabel LoginInformation;
     private JLabel AccesInformation;
-    
     private Font A1;
     private Font A2;
-    
     private JPasswordField InputPassword;
     private JButton ButtonAcces;
-    
     private int CountDefError;
     private String strDefError;
     private Timer TimeShowAccesInf;
     private Properties Languaje;
-    
+
 
     /*
      * Recibimos como parametro una objeto de tipo Administrador, ello para poder hacer un saludo mas personalizado
@@ -58,10 +54,10 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
      * que llevara un contador de intentos fallidos, al momento de causar 3 intentos fallidos se cerrará la aplicacion  
      */
     public NiconLoginSystem(NiconAdministrator DataAdmin) {
-        this.setSize(500, 250);
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-        this.setUndecorated(true);
+        setSize(500, 250);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
         this.DataAdmin = DataAdmin;
         CountDefError = 0;
         InitComponentes();
@@ -75,8 +71,8 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
      * libreta se cerrara
      */
     private void InitComponentes() {
-        
-        Languaje=GlobalConfigSystem.getLanguajeProperties();
+
+        Languaje = GlobalConfigSystem.getLanguajeProperties();
 
         A1 = new Font("Droid", 0, 45);
         A2 = new Font("Droid Sans", 0, 20);
@@ -95,7 +91,7 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
         NameAdmin.setFont(A2);
         NameAdmin.setForeground(Color.white);
 
-        LoginInformation = new JLabel("Powered By NiconSystem Inc.                                                                 " + GlobalConfigSystem.getTitleAplication());
+        LoginInformation = new JLabel("Powered By NiconSystem Inc.                                     " + GlobalConfigSystem.getTitleAplication());
         LoginInformation.setBounds(10, 230, 500, 20);
         LoginInformation.setFont(new Font("Droid Sans", Font.ITALIC, 11));
         LoginInformation.setForeground(new java.awt.Color(107, 183, 0));
@@ -107,14 +103,14 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
 
         AccesInformation = new JLabel();
         AccesInformation.setBounds(80, 195, 400, 25);
-        AccesInformation.setForeground(Color.red);
+        AccesInformation.setForeground(Color.yellow);
         AccesInformation.setFont(new Font("Droid Sans", Font.ITALIC, 15));
 
         ButtonAcces = new JButton();
         ButtonAcces.setBounds(435, 158, 30, 30);
         ButtonAcces.addActionListener(this);
         ButtonAcces.setToolTipText(Languaje.getProperty("TooltipButtonOK"));
-        ButtonAcces.setIcon(new ImageIcon(getClass().getResource(GlobalConfigSystem.getIconsPath()+"NiconOK.png")));
+        ButtonAcces.setIcon(new ImageIcon(getClass().getResource(GlobalConfigSystem.getIconsPath() + "NiconOK.png")));
         this.getRootPane().setDefaultButton(ButtonAcces);
     }
 
@@ -145,10 +141,10 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
         if (Input.equals("")) {
             ShowMessageLogin(1);
         } else {
-            boolean SecurityControlSystem = NiconSystemAdmin.VerifyIdentityUser(Input);
+            boolean accesControl = NiconSystemAdmin.verifyCredentialsUser(Input);
             System.out.println("Iniciando verificación de credenciales de seguridad ....");
 
-            if (SecurityControlSystem == true) {
+            if (accesControl == true) {
                 System.out.println("Verificación terminada, acceso concedido ...");
                 DataContact.init();
                 DataNotes.Init();
@@ -156,8 +152,8 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
                 FrontEnd.setVisible(true);
                 dispose();
             } else {
-
                 if (CountDefError == 2) {
+                    System.out.println("El acceso ha sido denegado ... el sistema terminara ahora");
                     System.exit(0);
                 } else {
                     System.out.println("Verficacion terminada, Acceso Denegado ...");
