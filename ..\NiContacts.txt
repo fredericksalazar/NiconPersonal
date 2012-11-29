@@ -1,0 +1,23 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.20
+Clave:         Venus
+Fecha:         17/10/2012/14:43
+
+Registro de contactos almacenados en NiconPersonal
+
+ContactID:  2,  Nombres:  maria lourdes sanchez, Alias:  mama, Ciudad: Dato sin asignar. Dirección:  Dato sin asignar, Celular:  3113126128,  Fijo:  Dato sin asignar, Email:  malosa-01@hotmail.com, Fecha Nacimiento:  null
+
+ContactID:  3,  Nombres:  miguel angel lopez sanchez, Alias:  primo, Ciudad: Dato sin asignar. Dirección:  Dato sin asignar, Celular:  3157113368,  Fijo:  Dato sin asignar, Email:  migulo@hotmail.com, Fecha Nacimiento:  null
+
+ContactID:  4,  Nombres:  juan carlos cardenas ramirez, Alias:  Juanca, Ciudad: cll25b#32-69. Dirección:  cll25b#32-69, Celular:  3284566589,  Fijo:  5141964, Email:  Juanca.cardenas@gmail.com, Fecha Nacimiento:  Thu Feb 25 00:00:00 COT 1971
+
+ContactID:  4,  Nombres:  ana lucia perez muñoz, Alias:  exmujer, Ciudad: florida. Dirección:  cll12a#23-47, Celular:  3127465721,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  5,  Nombres:  frederick adolfo salazar sanchez, Alias:  Genio, Ciudad: florida. Dirección:  cll9a#6a-09, Celular:  3184374382,  Fijo:  0, Email:  fredefass01@gmail.com, Fecha Nacimiento:  14/06/1989
+
+ContactID:  6,  Nombres:  maria oveida sanchez, Alias:  tia, Ciudad: cali. Dirección:  paraiso real, Celular:  3256547896,  Fijo:  0, Email:  tia@gmail.com, Fecha Nacimiento:  14/06/1758
+
+ContactID:  7,  Nombres:  nicole sofia salazar perez, Alias:  Hija Hermosa, Ciudad: florida. Dirección:  cll2#23-47, Celular:  3127465721,  Fijo:  0, Email:  0, Fecha Nacimiento:  08/04/2010
+

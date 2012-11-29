@@ -1,0 +1,14 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.30
+Nombre clave:  Venus
+Fecha creación:17/11/2012/18:03
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+Codigo :11
+Titulo:  Frase 1
+Nota:    Hay una fuerza motriz más poderosa que el vapor, la electricidad y la energia atomica, esa fuerza es la voluntad
+
+Alberth Einstein
+fecha creación: 13/10/2012/08:24

@@ -1,0 +1,9 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.28
+Nombre clave:  Venus
+Fecha creación:17/11/2012/17:34
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+ContactID:  9,  Nombres:  Jennifer Tello Tejada, Alias:  amiga, Ciudad: florida. Dirección:  cra 15 cll9, Celular:  3147214171,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha

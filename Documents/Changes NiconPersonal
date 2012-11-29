@@ -1,0 +1,96 @@
+este es un listado con todos los cambios y novedades de cada versión de NiconPersonal
+
+V 0.1
+
+	en la versión 0.1 se hace el inicio de NiconPersonal definiendo la creación y primeros pasos de la suite, se crea Contactos y la 
+	jerarquía de paquetes.
+
+V 0.1.1
+
+	se hace la creación de NiconSecuritySystem el sistema de validación de ingreso y seguridad de la suite de información. con su interfaz 		gráfica permite al usuario ingresar al sistema. pide usuario y contraseña la hereda de My Friends Library.
+
+	se hace la incorporación de un modulo contactos básico pero completo, creación, eliminación, actualización. se mejora la interfaz 	  gráfica de NiContacts
+
+	Se crea NiconDash como interfaz de inicio, con datos básicos de la agenda y un sistema de notificación de tiempo. fecha y hora.
+
+V 0.2.1
+
+	implementación de NiconUpdate como sistema de actualización para el Bachead y para el frontEnd
+
+	Se hace la incorporación de NiconNotes el modulo de notas de NiconPersonal con sus funciones básica de operación. creación, 		eliminación y edición, además la suite recibe un pequeño cambio a nivel gráfico
+
+	se hacen la corrección de errores para NiContacts y NiconNotes.
+
+	se incia el diseño de NiconLoginSystem
+
+	se desarrolla algoritmo de encriptacion MD
+
+V 0.2.2
+
+	se hace la implementacion de NiconSystemAdmin como interfaz de administracion interna de NiconPersonal define metodos esenciales para 		el sistema, dentro de este se hace el desarrollo de EncriptationSecurityService() el metodo encargado de proteger mediante el algoritmo
+	MD5 la contraseña del usuario.
+
+	se hace un nuevo rediseño del fronEnd GuiNicon se elimina la barra de menu superior y en su posision toma valor el MeMenu. ofrece
+	las funciones de cerrar sesion, salir, sobre NiconPersonal.
+
+	Nace NiconSysInfo un sistema que permite gestionar la informacion de versioning de NiconPersonal se modifica el Backend. y se 		implementa NiconSysInfo en el frontEnd
+
+V 0.2.3
+	
+	Se hace la implementacion de la nueva ventana de Login denominada NiconLoginSystem. la cual se enlaza con el sistema de encriptacion 		EncriptationSecurityService(), ademas ahora permite un ingreso limpio seguro y rápido.
+
+V 0.2.8
+
+	Se hace la implementacion de diseño de colorBackgroundInterface la cual define el color de cada una de las inetrfaces de uso, define 
+	un color especifico para NiContacts y NiconNotes.
+
+	Se hace la implementacion de TitledBorder en un gran trabajo de mejora estetica para NiconPersonal v 0.2.8
+
+	en su camino hacia NiconPersonal V0.3.5 se hace la incorporacion de NiconDateEvaluator 
+
+V 0.2.9
+
+	Se hace la implementacion de NiconPersonalView que permite ver la informacion personal de un contacto en un transparentFrame.
+
+	Se hace correcion de 25 errores detectados
+
+	Implementacion de GlobalConfigSystem que define las configuraciones globales de la aplicacion como fuentes, titulos y colores
+
+V 0.3.2
+
+	Se hace el rediseño e implementacion de NiconPersonalData un sistema de manejo de toda la informacion del sistema en memoria a traves 		de un ArrayList se hace la integracion con NiContacts y NiconNotes. esto permite mayor independencia del Backend y mayor rendimiento.
+
+	se hace el diseño y la implementacionde NiconWidgetUseful el api para el uso de NiconWidgetDesktop, usa metodos que permiten el 	funcionamiento de el widget de escritorio
+
+V 0.3.3	
+	Nace NiconWidgetDesktop se hace su integracion con NiconWdgetUseful y se define su sistema de funcionamiento.
+
+	se corrigen errores en vista del lanzamiento de NiconPersonal V0.3.5 APR Venus.
+
+V 0.3.5
+
+	Se hacen mejoras y recodificacion del codigo fuente permitiendo adelagzar el codigo y fuente y estructurarlo, ademas se inicia un 		proceso de documentacion del nucleo.
+
+	Lanzaiento oficial de NiconPersonal V 0.3.5 (Alfa Public Release) Venus.
+
+V 0.3.8 -> V 0.3.12
+
+	Mejoras a nivel de codigo fuente correcion de errores y mejoras en algoritmos de busqueda y eliminacion de datos
+
+	Se rediseña GuiNiContacts implementacion de una barra de menus y eliminacion del boton exportar. se reposisiona la Nicontactstable.
+
+	Implementacion de ToolTipTex en todos los componentes de accion de la interfaz grafica.
+
+V 0.4.0
+
+	Implementacion de La barra de menu de GuiNiContacts
+
+	Se agrega la propiedad ExportNiContactsListToTxt() que permite exportar toda la lista de contactos a un archivo NiContacts.txt
+
+	se agrega la propiedad ExportNiContactsListToCSV() que permite exportar toda la lista de contactos a un archivo NiContacts.csv
+
+	
+
+	
+
+	

@@ -1,0 +1,9 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.25
+Nombre clave:  Venus
+Fecha creación:10/11/2012/13:46
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+ContactID:  4,  Nombres:  julio  herrera, Alias:  chaman, Ciudad: florida. Dirección:  cll12a#21-25, Celular:  3117501877,  Fijo:  0, Email:  julignosis1@hotmail.com, Fecha Nacimiento:  18/04/1975

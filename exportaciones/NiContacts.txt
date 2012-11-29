@@ -1,0 +1,31 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.35
+Nombre clave:         Venus
+Fecha:         24/11/2012/17:13
+
+Registro de contactos almacenados en NiconPersonal
+
+ContactID:  1,  Nombres:  frederick adolfo salazar sanchez, Alias:  Ingeniero, Ciudad: florida. Dirección:  Cra12310a-30, Celular:  3184374382,  Fijo:  0, Email:  fredefass01@gmail.com, Fecha Nacimiento:  14/06/1989
+
+ContactID:  2,  Nombres:  ana lucia  perez muñoz, Alias:  exmujer, Ciudad: florida. Dirección:  cll12a#23-47, Celular:  3127465721,  Fijo:  0, Email:  lafresitazul@hotmail.com, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  3,  Nombres:  maria lourdes sanchez, Alias:  mama, Ciudad: cali. Dirección:  cll9a#6a-09, Celular:  3113126128,  Fijo:  0, Email:  malosa-01@hotmail.com, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  4,  Nombres:  julio  herrera, Alias:  chaman, Ciudad: florida. Dirección:  cll12a#21-25, Celular:  3117501877,  Fijo:  0, Email:  julignosis1@hotmail.com, Fecha Nacimiento:  18/04/1975
+
+ContactID:  5,  Nombres:  Samir Beltran, Alias:  Loca, Ciudad: florida. Dirección:  cra 14 con cll10, Celular:  3178144647,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  6,  Nombres:  Diego Fernando Lopez, Alias:  Gerente Gral, Ciudad: florida. Dirección:  cra12#10a-30, Celular:  3104695979,  Fijo:  2642049, Email:  ads-vidrios-aluminios@hotmail.com, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  7,  Nombres:  Doña Luz Correa, Alias:  Peluquera, Ciudad: florida. Dirección:  cra15 con cll9, Celular:  3164978070,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  8,  Nombres:  James Rivera, Alias:  Tio, Ciudad: florida. Dirección:  0, Celular:  3218517547,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  9,  Nombres:  Jennifer Tello Tejada, Alias:  amiga, Ciudad: florida. Dirección:  cra 15 cll9, Celular:  3147214171,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  10,  Nombres:  viviana  varela, Alias:  Amiga Palmira, Ciudad: palmira. Dirección:  palmmira, Celular:  3152218724,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+
+ContactID:  11,  Nombres:  Luis eduardo  leiva , Alias:  Alumina, Ciudad: florida. Dirección:  cra11#12-25, Celular:  3135937162,  Fijo:  0, Email:  0, Fecha Nacimiento:  No se ha ingresado la fecha
+

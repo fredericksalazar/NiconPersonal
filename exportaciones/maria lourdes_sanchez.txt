@@ -1,0 +1,9 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.23
+Nombre clave:  Venus
+Fecha creación:08/11/2012/16:57
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+ContactID:  3,  Nombres:  maria lourdes sanchez, Alias:  mama, Ciudad: cali. Dirección:  cll9a#6a-09, Celular:  3113126128,  Fijo:  0, Email:  malosa-01@hotmail.com, Fecha Nacimiento:  No se ha ingresado la fecha

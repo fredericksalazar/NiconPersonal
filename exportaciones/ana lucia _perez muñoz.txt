@@ -1,0 +1,9 @@
+
+
+Aplicación:    NiconPersonal
+Versión:       0.3.23
+Nombre clave:  Venus
+Fecha creación:08/11/2012/15:34
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+ContactID:  2,  Nombres:  ana lucia  perez muñoz, Alias:  exmujer, Ciudad: florida. Dirección:  cll12a#23-47, Celular:  3127465721,  Fijo:  0, Email:  lafresitazul@hotmail.com, Fecha Nacimiento:  No se ha ingresado la fecha
