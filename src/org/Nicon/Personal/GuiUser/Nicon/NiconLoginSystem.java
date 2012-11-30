@@ -23,6 +23,7 @@ import org.Nicon.Personal.Data.DataContact;
 import org.Nicon.Personal.Data.DataNotes;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
+import org.Nicon.Personal.LibCore.Sbin.Init;
 import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
 
 /*
@@ -146,8 +147,7 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
 
             if (accesControl == true) {
                 System.out.println("Verificación terminada, acceso concedido ...");
-                DataContact.init();
-                DataNotes.Init();
+                Init.Initialize();
                 GuiNicon FrontEnd = new GuiNicon(DataAdmin);
                 FrontEnd.setVisible(true);
                 dispose();

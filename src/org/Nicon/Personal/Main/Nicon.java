@@ -5,6 +5,7 @@ import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.UIManager;
 import org.Nicon.Personal.GuiUser.Nicon.GuiActivation;
 import org.Nicon.Personal.GuiUser.Nicon.NiconLoginSystem;
+import org.Nicon.Personal.LibCore.NiconTwitt.NiconTwitt;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
@@ -26,7 +27,7 @@ public class Nicon{
                                    System.out.println("Iniciando activación de "+GlobalConfigSystem.getTitleAplication());
                                    GuiActivation activar = new GuiActivation();
                                    activar.setLocationRelativeTo(null);
-                                   activar.setVisible(true);
+                                   activar.setVisible(true);                                   
                            } else {
                                   System.out.println("Iniciando componentes de "+GlobalConfigSystem.getTitleAplication());
                                   NiconUpdate.VerifySystemVersion();

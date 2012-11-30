@@ -54,6 +54,7 @@ public class NiconTwitt {
      */
     public NiconTwitt() {
         NiconFileAdmin = new NiconFileAdministrator();
+        getConfigurationAccount();
     }
 
     /**
@@ -100,10 +101,8 @@ public class NiconTwitt {
     public boolean updateStatus(String status) {
         if (status != null) {
             try {
-                getConfigurationAccount();
                 twitter.updateStatus(status);
                 stateOP = true;
-                getAcountBasicInformation();
             } catch (TwitterException ex) {
                 Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
                 stateOP = false;
@@ -118,7 +117,6 @@ public class NiconTwitt {
     public void getTimeLine() {
         try {
             int index=0;
-            getConfigurationAccount();
             ResponseList<twitter4j.Status> homeTimeline = twitter.getHomeTimeline();            
         } catch (Exception ex) {
             Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,7 +125,6 @@ public class NiconTwitt {
     
     public ArrayList getContactList(){
         try{
-           this.getConfigurationAccount();
           
         }catch(Exception e){
                     
@@ -147,7 +144,6 @@ public class NiconTwitt {
      */
     public InformationTwitterAccount getAcountBasicInformation() {
         try {
-            getConfigurationAccount();
             settings=twitter.getAccountSettings();
             totals=twitter.getAccountTotals();
             basicDataAccount=new InformationTwitterAccount(totals.getFriends(),totals.getFollowers(),totals.getFavorites(),totals.getUpdates(),settings.getLanguage());
@@ -167,8 +163,7 @@ public class NiconTwitt {
      * 
      */
     public void getConfigurationAccount() {
-        try {
-            
+        try {            
             System.out.println("Comprobando configuracion de Acceso a cuenta de twiter ...");
             if (NiconFileAdmin.verifyFileExistSimple("TCA.npc", "./Config")) {
                 tca=NiconFileAdmin.readFileObject("./Config/TCA.npc");

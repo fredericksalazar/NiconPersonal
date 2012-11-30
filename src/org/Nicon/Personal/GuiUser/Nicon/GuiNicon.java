@@ -16,7 +16,6 @@ import org.Nicon.Personal.GuiUser.Information.GuiAbout;
 import org.Nicon.Personal.GuiUser.NiContacts.GuiContacts;
 import org.Nicon.Personal.GuiUser.Nicon.Twitt.PostTwitt;
 import org.Nicon.Personal.GuiUser.NiconNotes.GuiAdminNotes;
-import org.Nicon.Personal.LibCore.NiconTwitt.InformationTwitterAccount;
 import org.Nicon.Personal.LibCore.NiconTwitt.NiconTwitt;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
