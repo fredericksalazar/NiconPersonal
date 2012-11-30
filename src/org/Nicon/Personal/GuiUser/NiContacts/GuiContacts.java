@@ -16,7 +16,6 @@ import org.Nicon.Personal.LibCore.Sbin.ExportNiContacts;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiContact;
 import org.Nicon.Personal.LibCore.Sbin.DAO.NiContactsDAO;
-import org.Nicon.Personal.LibCore.i18n.Nicon_i18n;
 
 /*
  * GuiNicontacts es la interfaz de frontend encargada de interactuar con el usuario, dotada para administrar toda
@@ -32,6 +31,7 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
     private int CountAccesLoad = 0;
     private int buttonPositionY;
     private int buttonPositionX;
+    private int index;
     
     private Color InterfaceColor;
     
@@ -47,31 +47,34 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
     private JLabel JLViewContact;
     private JLabel JLExportContact;
     
-    private static JLabel JLNombres;
     private JLabel JLContactID;
-    private static JLabel JLTmpContactID;
     private JLabel JLalias;
-    private static JLabel JLTmpAlias;
     private JLabel JLMovil;
-    private static JLabel JlTmpMovil;
     private JLabel JLFijo;
-    private static JLabel JLTmpFijo;
     private JLabel JLEmail;
-    private static JLabel JLTmEmail;
     private JLabel JLDireccion;
-    private static JLabel JLTmpDireccion;
     private JLabel JLCiudad;
-    private static JLabel JLTmpCiudad;
     private JLabel JLGrupo;
-    private static JLabel JLTmpGrupo;
     private JLabel JLCountContacts;
     private JLabel JLPhoto;
+    
+    private JLabel JLNombres;   
+    private JLabel JLTmpContactID;    
+    private JLabel JLTmpAlias;    
+    private JLabel JlTmpMovil;    
+    private JLabel JLTmpFijo;    
+    private JLabel JLTmEmail;    
+    private JLabel JLTmpDireccion;    
+    private JLabel JLTmpCiudad;    
+    private JLabel JLTmpGrupo;    
     
     private JButton JBnuevoCon;
     private JButton JBupdateCon;
     private JButton JBIdeleteCon;
     private JButton JBdeleteCon;
     private JButton JBseeCon;
+    private JButton JBLeft;
+    private JButton JBRight;
     
     private JComboBox JCGrupos;
     
@@ -101,11 +104,10 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
     private JScrollPane Jscroll;
     private JTextField JTSearchCon;
     private static ArrayList ListContactData;
-    private ExportNiContacts export;
-    private int index;
-    private NiContact contact;
-    private NiContactsDAO contactDAO;
     
+    private ExportNiContacts export;    
+    private NiContact contact;
+    private NiContactsDAO contactDAO;    
     private Properties Languaje;
     
     
@@ -198,7 +200,7 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         JMLast.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                selectedLastContact();
+                selectLastContact();
             }
         });
         
@@ -266,13 +268,22 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         JLCountContacts = new JLabel("Total contactos:");
         JLCountContacts.setForeground(InterfaceColor);
         JLCountContacts.setBounds(130, 598, 600, 20);
-
+        
+        JBLeft=new JButton(new javax.swing.ImageIcon(getClass().getResource(ResourceImages+"NiconLeftBT.png")));
+        JBLeft.setBounds(658, 560, 40, 30);
+        JBLeft.setToolTipText("Selecciona el contacto anterior");
+        JBLeft.addActionListener(this);
+        
+        JBRight=new JButton(new javax.swing.ImageIcon(getClass().getResource(ResourceImages+"NiconRightBT.png")));
+        JBRight.setBounds(710, 560, 40, 30);
+        JBRight.setToolTipText("Selecciona el contacto siguiente");
+        JBRight.addActionListener(this);
+        
         JTSearchCon = new JTextField("Buscar:");
         JTSearchCon.setBounds(458, 590, 300, 25);
         JTSearchCon.setFont(new Font("Verdana", 2, 13));
         JTSearchCon.setForeground(InterfaceColor);
         JTSearchCon.addKeyListener(new KeyAdapter() {
-
             @Override
             public void keyTyped(KeyEvent e) {
                 char caracter = e.getKeyChar();
@@ -403,10 +414,8 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         JLTmpGrupo.setFont(this.A2);
 
         ListContactData = new ArrayList();
-
-        // se hace la llamada al metodo que se encarga de la cargar todos los datos en el modelo de la tabla
-        //para mostrarlos a traves de la Interfaz GuiContacts
-        LoadDataBackEnd();
+        
+        getArrayListDataContact();
 
         JLCountContacts.setText("Total contactos:   " + String.valueOf(Model.getRowCount()));
 
@@ -441,25 +450,31 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         NicontactsPanel.add(JLTmpGrupo);
         NicontactsPanel.add(JLCountContacts);
         NicontactsPanel.add(JLPhoto);
+        NicontactsPanel.add(JBLeft);
+        NicontactsPanel.add(JBRight);
 
         return NicontactsPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        
+        // se ejecuta el metodo cuando el usuario requiere crear un nuevo contacto del sistema
         if (e.getSource() == JBnuevoCon || e.getSource() == JMcrearC) {
             GuiCreateContact nuevo = new GuiCreateContact();
             nuevo.setVisible(true);
         }
+        
+        //se ejecuta el metodo cuando el usuario requiere eliminar un contacto del sistema
         if (e.getSource() == JBdeleteCon || e.getSource() == JMdelC) {
             int del = this.getSelectedIndexTable();
             if (del > -1) {
                 DataContact.deleteContact(del);
-                ReloadDataContactList();
+                updateDataToJTable();
             }
         }
-
+        
+        // se hace la llamada al metodo cuando el usuario requiere editar un contacto del sistema
         if (e.getSource() == JBupdateCon || e.getSource() == JMeditC) {
             int upd = this.getSelectedIndexTable();
             if (upd > -1) {
@@ -468,10 +483,10 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
                 updatecon.setVisible(true);
             }
         }
-
+        
+        // se ejecuta la llamada al metodo de viewer cuando el usuario desea ver un contacto
         if (e.getSource() == JBseeCon) {
             int Viw = this.getSelectedIndexTable();
-
             if (Viw > -1) {
                 NiContact vista = (NiContact) ListContactData.get(Viw);
                 GuiViewContact view = new GuiViewContact(vista);
@@ -479,10 +494,12 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
             }
         }
         
+        // se hace la llamada al metodo encargado de exportar informacion de un contacto
         if(e.getSource()==JMexpConTxt){
             exportSelectedContactTxt();
         }
 
+            
         if (e.getSource() == JMexpTxt) {
             try {
                 export.exportNiContactsToTxt();
@@ -494,14 +511,22 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         if (e.getSource() == JMexpCsv) {
             export.exportNiContactsListToCvs();
         }
+        
+        if(e.getSource()==JBRight){
+            this.showNextContact();
+        }
+        if(e.getSource()==JBLeft){
+            this.showPreviousContact();
+        }
     }
 
+    
     /*
      * Este metodo se encuentra en fase inicial, es el encargado de buscar segun los parametros recibidos la informacion
      * basica de un contacto dentro de la lista de contactos existente en el frontEnd. hace uso de un algoritmo simple
      * de busqueda de informacion y va a ser modificado y mejorado en futuras versiones.
      */
-    public static int SearchContactTable(String car) {
+    public int SearchContactTable(String car) {
         int index = 0;
         for (int i = 0; i < Model.getRowCount(); i++) {
             String tmp = (String) Model.getValueAt(i, 0);
@@ -516,7 +541,12 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         return index;
     }
 
-    public static void ShowDataContact(NiContact Tmp) {
+    /*
+     * Este metodo se encarga de austar la informacion de un contacto seleccionado en la
+     * NiContactsTable en el panel de vision. recibe como parametro un objeto de tipo
+     * NiContact y obtiene los datos para austar la presentacion.
+     */
+    public void ShowDataContact(NiContact Tmp) {
         JLNombres.setText(Tmp.getNombres() + " " + Tmp.getApellidos());
         JLTmpContactID.setText(String.valueOf(Tmp.getCodigo()));
         JLTmpAlias.setText(Tmp.getApodo());
@@ -530,22 +560,19 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
 
     /*
      * este metodo se encarga de obtener el indice de la fila seleccionada por el usuario, es usada para
-     * poder ejecutar las sentencias que see requieran por parte de cada objeto.
+     * poder ejecutar las sentencias que se requieran por parte de cada objeto.
      * 
      * retorna un numero int con el indice de la fila seleccionada
-     * 
-     * version: 0.1
      */
     private int getSelectedIndexTable() {
         index = -1;
-
         index = NiContactsTable.getSelectedRow();
         if (index < 0) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado ningún contacto", GlobalConfigSystem.getTitleAplication(), JOptionPane.ERROR_MESSAGE);
         }
-
         return index;
     }
+    
 
     /*
      * Este metodo es usado para cargar todos los contactos almacenados en el backend a un ayyar de datos
@@ -555,21 +582,21 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
      * y pasa a cargar el array de datos obtenido desde Init. en caso de ser 1 omite la carga de datos para 
      * no rellenar con los mismos datos el array
      */
-    private void LoadDataBackEnd() {
-
+    private void getArrayListDataContact() {
         if (CountAccesLoad == 0) {
             ListContactData = DataContact.CloneData();
         }
         CountAccesLoad++;
-        LoadListContacts();
+        loadDataToJTable();
     }
+    
 
     /*
      * Este metodo es el encargado de cargar la informacion de los contactos almacenados en el backend y cargarlos un 
      * listado de datos. posteriormente es cargado al backend haciendo uso de una JTable.
      * este metodo puede ser mejorado en versiones posteriores.
      */
-    private static void LoadListContacts() {
+    private static void loadDataToJTable() {
 
         NiContact tmp = new NiContact();
 
@@ -580,7 +607,6 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
                 VectorContact[1] = tmp.getApodo();
                 Model.addRow(VectorContact);
             }
-            System.out.println("La tabla fue cargada satisfactoriamente ....  total registros=  #" + Model.getRowCount());
         } catch (Exception e) {
             System.out.println("Ocurrio el siguiente Error en CuiContacts.LoadListContacts() detail: " + e.getStackTrace());
         }
@@ -590,11 +616,11 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
      * este metodo tiene como funcion hacer una limpieza de datos almacenados en las variables de almacenamiento
      * posteriormente hace una recarga de datos desde el backend y los carga directamente al frontend.
      */
-    public static void ReloadDataContactList() {
+    public static void updateDataToJTable() {
 
         try {
             Model.getDataVector().removeAllElements();
-            LoadListContacts();
+            loadDataToJTable();
             NiContactsTable.clearSelection();
         } catch (Exception e) {
             System.out.println("Ocurrio el siguiente ERROR en GuiContacts.RefreshDataContact() detail: " + e);
@@ -618,7 +644,29 @@ public class GuiContacts extends JPanel implements ActionListener, MouseListener
         }
     }
     
-    public void selectedLastContact(){
+    private void showNextContact(){
+        index=NiContactsTable.getSelectedRow();
+            if(index==-1){
+                this.selectFirstContact();
+            }else{
+                contact=DataContact.getContact(index++);
+                ShowDataContact(contact);
+                NiContactsTable.changeSelection(index++, 0, false, false);
+            }
+    }
+    
+    private void showPreviousContact(){
+        index=NiContactsTable.getSelectedRow();
+            if(index>NiContactsTable.getRowCount()){
+                this.selectLastContact();
+            }else{
+                contact=DataContact.getContact(index--);
+                ShowDataContact(contact);
+                NiContactsTable.changeSelection(index--, 0, false, false);
+            }
+    }
+    
+    public void selectLastContact(){
         try{
            contact=DataContact.getLastContact();
            ShowDataContact(contact);

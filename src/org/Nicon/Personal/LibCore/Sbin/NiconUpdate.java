@@ -44,13 +44,13 @@ public class NiconUpdate{
                                 System.out.println("Iniciando actualización de los módulos de "+GlobalConfigSystem.getTitleAplication());
                                 DataAplication.UpdateToVenus();                    
                                 DataAplication=new NiconPersonalData(CurrentNameAplication,CurrentAlternativeName,CurrentSystemVersion);
-                                DataAplication.SetDataVersion();
+                                DataAplication.updateDataAplication();
                                 System.out.println("Actualización terminada exitosamente.");
                             }
                             if((!DataAplication.getAplicationVersion().equals(CurrentSystemVersion))){
                                 System.out.println("Iniciando actualización de los módulos de "+GlobalConfigSystem.getTitleAplication());
                                 DataAplication=new NiconPersonalData(CurrentNameAplication,CurrentAlternativeName,CurrentSystemVersion);
-                                DataAplication.SetDataVersion();
+                                DataAplication.updateDataAplication();
                                 System.out.println("Actualización terminada exitosamente.");
                             }      
                     }

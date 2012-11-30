@@ -33,7 +33,7 @@ public class DataNotes {
         try{
            NoteDAO=new NiconNotesDAO();
            ListNotes=NoteDAO.getAllNotes();
-           System.out.println("Todos las Notas han sido cargadas a DataNotes total Size: "+ListNotes.size());
+           System.out.println("DataNotes ha iniciado correctamente .Size = "+ListNotes.size());
         }catch(Exception e){
             System.out.println("Ocurrio un error en DataNotes.init() Detail ERROR \n"+e+" \n"+e.getCause());         
         }

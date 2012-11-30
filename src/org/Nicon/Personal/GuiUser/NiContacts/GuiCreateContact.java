@@ -251,9 +251,9 @@ public class GuiCreateContact extends JFrame implements ActionListener {
             if (fijo.equals("")) {
                 fijo = NodataInput;
             }          
-            Contact = new NiContact(ContactDAO.createContactID(), nombres, apellidos, apodo, direccion, ciudad, celular, fijo, email,NiconSystemAdmin.DateFormatSingle(fecha_nac), group);
+            Contact = new NiContact(ContactDAO.createContactID(), nombres, apellidos, apodo, direccion, ciudad, celular, fijo, email,NiconSystemAdmin.dateFormatSimple(fecha_nac), group);
             DataContact.addContact(Contact);            
-            GuiContacts.ReloadDataContactList();
+            GuiContacts.updateDataToJTable();
             setVisible(false);
         }
     }

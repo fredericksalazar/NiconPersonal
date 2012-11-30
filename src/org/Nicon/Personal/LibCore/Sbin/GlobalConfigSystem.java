@@ -54,7 +54,7 @@ public class GlobalConfigSystem {
         ForegroundAplicationText=new java.awt.Color(210, 210, 210);
         ForegroundDashPanel=new Color(18, 151, 220);
         NiconPersonalColorInterface=new java.awt.Color(35, 35, 35);
-        Languaje=new Nicon_i18n("Ingles");        
+        Languaje=new Nicon_i18n();        
     }
 
     public static String getAlternativeName() {

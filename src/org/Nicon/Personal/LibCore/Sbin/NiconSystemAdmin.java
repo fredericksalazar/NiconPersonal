@@ -19,7 +19,7 @@ import org.Nicon.Personal.LibCore.Sbin.DAO.NiconAdministratorDAO;
 public class NiconSystemAdmin {
 
     private static final char[] HEXADECIMAL = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
-        'c', 'd', 'e', 'f'};
+                                               'c', 'd', 'e', 'f'};
     private static boolean StateActivationSystem = false;
     private static String EncoderCodification;
     private static ResultSet Data;
@@ -96,7 +96,7 @@ public class NiconSystemAdmin {
         return NowTime;
     }
 
-    public static String DateFormatSingle(Date ToFormat) {
+    public static String dateFormatSimple(Date ToFormat) {
         String SingleDate = "";
         if (ToFormat == null) {
             SingleDate = "No se ha ingresado la fecha";

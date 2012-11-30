@@ -165,10 +165,10 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
      * Version:  0.1.2
      */
     private void LoadHomePanel() {
-        twitter=new NiconTwitt();
-        InformationTwitterAccount twitterInfo=new InformationTwitterAccount();
-        twitter.getConfigurationAccount();
-        twitterInfo=twitter.getAcountBasicInformation();
+//        twitter=new NiconTwitt();
+//        InformationTwitterAccount twitterInfo=new InformationTwitterAccount();
+//        twitter.getConfigurationAccount();
+//        twitterInfo=twitter.getAcountBasicInformation();
         
         NiconAdmin = NiconAdministrator.GetDataAdmin();
 
@@ -246,10 +246,10 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
         JBNiconTwitt.addActionListener(this);
         JBNiconTwitt.setBounds(690,550,60, 60);
         
-        NiconTwittInformation=new JLabel(twitterInfo.getStatuses()+" Tweets / "+twitterInfo.getFriends()+" Siguiendo / "+twitterInfo.getFollowers()+" Seguidores / "+twitterInfo.getLanguaje());
-        NiconTwittInformation.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        NiconTwittInformation.setFont(this.A2);
-        NiconTwittInformation.setBounds(10,560,800,25);
+//        NiconTwittInformation=new JLabel(twitterInfo.getStatuses()+" Tweets / "+twitterInfo.getFriends()+" Siguiendo / "+twitterInfo.getFollowers()+" Seguidores / "+twitterInfo.getLanguaje());
+//        NiconTwittInformation.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+//        NiconTwittInformation.setFont(this.A2);
+//        NiconTwittInformation.setBounds(10,560,800,25);
 
         NiconInfo = new JLabel("NiconPersonal is powered By NiconSystem Inc.");
         NiconInfo.setForeground(Color.lightGray);
@@ -273,7 +273,7 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
         DashPanel.add(CurrentMonth);
         DashPanel.add(NiconInfo);
         DashPanel.add(JBNiconTwitt);
-        DashPanel.add(NiconTwittInformation);
+//        DashPanel.add(NiconTwittInformation);
     }
 
     @Override

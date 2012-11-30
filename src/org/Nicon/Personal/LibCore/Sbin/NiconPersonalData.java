@@ -85,14 +85,15 @@ public class NiconPersonalData {
      * el metodo se encrarga en cada actualizacion de ajustar los valores en el backend, actualiza esa informacion para
      * posterior uso y comparaciones.
      */
-    public void SetDataVersion(){
+    public void updateDataAplication(){
         try{
             sentence="delete from niconsysinfo where 1;";
             NiConection.ExecuteSentence(sentence);
             sentence = "insert into NiconSysInfo values('"+getNameAplication()+"','"+getAlternativeName()+"','"+getAplicationVersion()+"','AlfaT1','" + NiconSystemAdmin.GetInstantTime() + "');";
             NiConection.ExecuteSentence(sentence);
         }catch(Exception er){
-            
+            System.out.println("Ocurrio un error al intentar ajustar Datos de la aplicacion detail error\n");
+            er.printStackTrace();
         }
     }
     

@@ -127,7 +127,7 @@ public class GuiUpdateContact extends JDialog implements ActionListener {
       } else {
         ApiContact.updateContact(this.update.getCodigo(), this.update.getNombres(), campo, dato);
         setVisible(false);
-        GuiContacts.ReloadDataContactList();
+        GuiContacts.updateDataToJTable();
       }
     }
   }
