@@ -6,17 +6,22 @@ package org.Nicon.Personal.LibCore.NiconTwitt;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.SSLEngineResult.Status;
 import javax.swing.JOptionPane;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Sbin.NiconFileAdministrator;
 import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
+import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
@@ -41,6 +46,8 @@ public class NiconTwitt {
     private boolean stateOP;
     private AccountTotals totals;
     private AccountSettings settings;
+    private ArrayList contactsTwitter;
+    private Iterator iter;
 
     /**
      * 
@@ -110,13 +117,22 @@ public class NiconTwitt {
      */
     public void getTimeLine() {
         try {
-            twitter = TwitterFactory.getSingleton();
-            List statuses = twitter.getHomeTimeline();
-            System.out.println("Showing home timeline.");
-            getAcountBasicInformation();
-        } catch (TwitterException ex) {
+            int index=0;
+            getConfigurationAccount();
+            ResponseList<twitter4j.Status> homeTimeline = twitter.getHomeTimeline();            
+        } catch (Exception ex) {
             Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ArrayList getContactList(){
+        try{
+           this.getConfigurationAccount();
+          
+        }catch(Exception e){
+                    
+        }
+        return contactsTwitter;
     }
 
     /**
@@ -127,7 +143,7 @@ public class NiconTwitt {
      * 
      * @Author Frederick Adolfo Salazar Sanchez
      * @return ArrayList con todos los datos obtenidos de la cuenta
-     * 
+     
      */
     public InformationTwitterAccount getAcountBasicInformation() {
         try {
