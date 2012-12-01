@@ -8,16 +8,15 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.SSLEngineResult.Status;
 import javax.swing.JOptionPane;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Sbin.NiconFileAdministrator;
 import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
 import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -55,6 +54,7 @@ public class NiconTwitt {
     public NiconTwitt() {
         NiconFileAdmin = new NiconFileAdministrator();
         getConfigurationAccount();
+        getInformationUserAccount();
     }
 
     /**
@@ -101,12 +101,24 @@ public class NiconTwitt {
     public boolean updateStatus(String status) {
         if (status != null) {
             try {
-                twitter.updateStatus(status);
+                Status updateStatus = twitter.updateStatus(status);
                 stateOP = true;
             } catch (TwitterException ex) {
                 Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
                 stateOP = false;
             }
+        }
+        return stateOP;
+    }
+    
+    public boolean deleteStatus(long id){
+        try{
+            Status destroyStatus = twitter.destroyStatus(id);
+            stateOP=true;
+        }catch(Exception e){
+            System.out.println("Ocurrio un error en NiconTwitt.deleteStatus(Long id) detail"+e.getStackTrace());
+            stateOP=false;
+            
         }
         return stateOP;
     }
@@ -123,13 +135,26 @@ public class NiconTwitt {
         }
     }
     
-    public ArrayList getContactList(){
+    public void getContactList(){
         try{
-          
+            
         }catch(Exception e){
-                    
+              e.printStackTrace();      
         }
-        return contactsTwitter;
+//        return contactsTwitter;
+    }
+    
+    public boolean searchUser(String email){
+        try{
+            ResponseList<User> searchUsers = twitter.searchUsers(email, 20);
+                if(searchUsers!=null){
+                User get = searchUsers.get(0);
+                System.out.println(get.getName());
+                }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return stateOP;
     }
 
     /**
@@ -140,17 +165,32 @@ public class NiconTwitt {
      * 
      * @Author Frederick Adolfo Salazar Sanchez
      * @return ArrayList con todos los datos obtenidos de la cuenta
-     
+     *
      */
-    public InformationTwitterAccount getAcountBasicInformation() {
+    public InformationTwitterAccount getInformationUserAccount() {
         try {
             settings=twitter.getAccountSettings();
-            totals=twitter.getAccountTotals();
-            basicDataAccount=new InformationTwitterAccount(totals.getFriends(),totals.getFollowers(),totals.getFavorites(),totals.getUpdates(),settings.getLanguage());
+            User user = twitter.verifyCredentials();
+            int friendsCount = user.getFriendsCount();
+            int followersCount = user.getFollowersCount();
+            int favouritesCount = user.getFavouritesCount();
+            int statusesCount = user.getStatusesCount();
+            String lang = user.getLang();
+            String screenName = user.getScreenName();
+            String uRL = user.getURL();
+            basicDataAccount=new InformationTwitterAccount(friendsCount,followersCount,favouritesCount,statusesCount,lang,screenName,uRL);
+            basicDataAccount.saveInformationTwitterAccount();
             System.out.println(basicDataAccount.toString());
         } catch (Exception e) {
-            e.printStackTrace();
-        }
+            
+        } 
+        return basicDataAccount;
+    }
+    
+    private InformationTwitterAccount getLocalDataAccount(){
+        System.out.println("No se puede cargar Informacion de www.Twitter.com API");
+        System.out.println("Cargando datos locales ...");
+        basicDataAccount = basicDataAccount.readInformationTwitterAccount();
         return basicDataAccount;
     }
 
@@ -166,7 +206,7 @@ public class NiconTwitt {
         try {            
             System.out.println("Comprobando configuracion de Acceso a cuenta de twiter ...");
             if (NiconFileAdmin.verifyFileExistSimple("TCA.npc", "./Config")) {
-                tca=NiconFileAdmin.readFileObject("./Config/TCA.npc");
+                tca=(TwitterConfigAcount) NiconFileAdmin.readFileObject("./Config/TCA.npc");
                 accesToken=tca.getDataAccessToken();
                 configuration = new ConfigurationBuilder();
                 configuration.setDebugEnabled(true);
