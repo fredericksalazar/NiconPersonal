@@ -15,6 +15,7 @@ import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Sbin.NiconFileAdministrator;
 import twitter4j.AccountSettings;
 import twitter4j.AccountTotals;
+import twitter4j.DirectMessage;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -39,10 +40,10 @@ public class NiconTwitt {
     private NiconFileAdministrator NiconFileAdmin;
     private InformationTwitterAccount basicDataAccount;
     private TwitterConfigAcount tca;
-    private Twitter twitter;
+    private static Twitter twitter;
     private TwitterFactory factory;
     private ConfigurationBuilder configuration;
-    private boolean stateOP;
+    private static boolean stateOP;
     private AccountTotals totals;
     private AccountSettings settings;
     private ArrayList contactsTwitter;
@@ -111,7 +112,7 @@ public class NiconTwitt {
         return stateOP;
     }
     
-    public boolean deleteStatus(long id){
+    public static boolean deleteStatus(long id){
         try{
             Status destroyStatus = twitter.destroyStatus(id);
             stateOP=true;
@@ -119,6 +120,26 @@ public class NiconTwitt {
             System.out.println("Ocurrio un error en NiconTwitt.deleteStatus(Long id) detail"+e.getStackTrace());
             stateOP=false;
             
+        }
+        return stateOP;
+    }
+    
+    /*
+     * Este metodo permite enviar un mensaje directo a un usuario de twitter, recibe como
+     * parametros el userName y el Mensaje a enviar.
+     */
+    public static boolean sendDirectMessage(String UserName,String Message){
+        try{
+            System.out.println("Inciando evio de mensaje a twitter ...");
+            DirectMessage SendMessage = twitter.sendDirectMessage(UserName, Message);
+            System.out.println("Mensaje enviado correctamente ...");
+            SendMessage.getId();
+            SendMessage.getRecipient();
+            stateOP=true;
+            System.out.println("Message Details: \n"+SendMessage.getId()+"/ "+SendMessage.getCreatedAt()+" / "+SendMessage.getSenderScreenName()+"\n"+SendMessage.getText());
+          }catch(Exception e){
+            System.out.println("Ocurrio el siguiente error y el mensaje no se envio: \n"+ e);
+            stateOP=false;
         }
         return stateOP;
     }
@@ -137,7 +158,7 @@ public class NiconTwitt {
     
     public void getContactList(){
         try{
-            
+           
         }catch(Exception e){
               e.printStackTrace();      
         }
