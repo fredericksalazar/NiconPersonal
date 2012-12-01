@@ -15,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.Nicon.Personal.LibCore.NiconTwitt.TwitterConfigAcount;
 
 /**
  *
@@ -31,7 +30,7 @@ public class NiconFileAdministrator {
     
     private File NiconFile;
     private FileWriter NiconWriter;
-    private TwitterConfigAcount tca;
+    private Object data;
     
     private String Path;
     private String content;
@@ -97,15 +96,15 @@ public class NiconFileAdministrator {
         }
     }
     
-    public TwitterConfigAcount readFileObject(String PathFile){
+    public Object readFileObject(String PathFile){
         try{
            OIS=new ObjectInputStream(new FileInputStream(PathFile));
-           tca=(TwitterConfigAcount) OIS.readObject();
+           data= OIS.readObject();
            OIS.close();
         }catch(Exception e){
             
         }
-        return tca;
+        return data;
     }
     
     
