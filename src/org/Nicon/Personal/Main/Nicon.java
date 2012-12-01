@@ -5,7 +5,6 @@ import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.UIManager;
 import org.Nicon.Personal.GuiUser.Nicon.GuiActivation;
 import org.Nicon.Personal.GuiUser.Nicon.NiconLoginSystem;
-import org.Nicon.Personal.LibCore.NiconTwitt.NiconTwitt;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;

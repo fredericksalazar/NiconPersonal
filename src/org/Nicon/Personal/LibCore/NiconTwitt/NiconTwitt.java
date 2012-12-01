@@ -99,7 +99,7 @@ public class NiconTwitt {
      * @param status
      * @return  
      */
-    public boolean updateStatus(String status) {
+    public static boolean updateStatus(String status) {
         if (status != null) {
             try {
                 Status updateStatus = twitter.updateStatus(status);
@@ -165,12 +165,12 @@ public class NiconTwitt {
 //        return contactsTwitter;
     }
     
-    public boolean searchUser(String email){
+    public static boolean searchUser(String email){
         try{
-            ResponseList<User> searchUsers = twitter.searchUsers(email, 20);
+            ResponseList<User> searchUsers = twitter.searchUsers(email,20);
                 if(searchUsers!=null){
-                User get = searchUsers.get(0);
-                System.out.println(get.getName());
+                    User get = searchUsers.get(0);
+                    System.out.println(get.getName());
                 }
         }catch(Exception e){
             e.printStackTrace();

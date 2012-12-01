@@ -21,6 +21,8 @@ public class Init {
         TwitterInit=new NiconTwitt();
         DataContact.init();
         DataNotes.Init();
+        NiconSystemAdmin.verifyInternetConection();
+        NiconTwitt.searchUser("@Juancarlos");
     }
     
 }
