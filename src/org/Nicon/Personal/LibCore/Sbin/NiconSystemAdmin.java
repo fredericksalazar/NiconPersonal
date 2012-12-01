@@ -3,6 +3,7 @@ package org.Nicon.Personal.LibCore.Sbin;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -21,6 +22,7 @@ public class NiconSystemAdmin {
     private static final char[] HEXADECIMAL = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
                                                'c', 'd', 'e', 'f'};
     private static boolean StateActivationSystem = false;
+    private static boolean state;
     private static String EncoderCodification;
     private static ResultSet Data;
     private static NiConection conexion = new NiConection();
@@ -145,5 +147,26 @@ public class NiconSystemAdmin {
         ValueDimension[0] = WidthScreen;
         ValueDimension[1] = HeightScreen;
         return ValueDimension;
+    }
+    
+    /*
+     * Este metodo servira para verificar sin un usuario posee o no una conexion a internet
+     * que nos permita interactuar con el Api de twitter. 
+     *  retorna boolean con el estado de la conexion.
+     */
+    public static boolean verifyInternetConection(){
+        try{
+           String url="www.twitter.com";
+           int port=80;
+           Socket conect=new Socket(url,port);
+                if(conect.isConnected()){
+                    System.out.println("El sistema se encuentra conectado a Internet ...");
+                    state=true;
+                }
+        }catch(Exception e){
+            System.out.println("No se encontro conexion a internet ...");
+            state=false;
+        }
+        return state;
     }
 }
