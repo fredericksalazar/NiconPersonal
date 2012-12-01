@@ -5,6 +5,7 @@
 package org.Nicon.Personal.LibCore.NiconTwitt;
 
 import java.io.Serializable;
+import org.Nicon.Personal.LibCore.Sbin.NiconFileAdministrator;
 
 /**
  * Esta clase es la encargada de crear objetos con informacion basica de la cuenta de el usuario
@@ -19,6 +20,11 @@ public class InformationTwitterAccount implements Serializable{
     private int favorites;
     private int statuses;
     private String Languaje;
+    private String UserName;
+    private String UrlAccount;
+    
+    private NiconFileAdministrator FileAdmin;
+    private InformationTwitterAccount dataUser;
 
     /**
      * 
@@ -28,12 +34,22 @@ public class InformationTwitterAccount implements Serializable{
      * @param statuses
      * @param Languaje
      */
-    public InformationTwitterAccount(int friends, int followers, int favorites, int statuses, String Languaje) {
+    public InformationTwitterAccount(int friends, int followers, int favorites, int statuses, String Languaje,String UserName,String urlAccount) {
         this.friends = friends;
         this.followers = followers;
         this.favorites = favorites;
         this.statuses = statuses;
         this.Languaje = Languaje;
+        this.UserName=UserName;
+        this.UrlAccount=urlAccount;
+    }
+
+    public String getUrlAccount() {
+        return UrlAccount;
+    }
+
+    public void setUrlAccount(String UrlAccount) {
+        this.UrlAccount = UrlAccount;
     }
     
     public InformationTwitterAccount(){
@@ -119,6 +135,31 @@ public class InformationTwitterAccount implements Serializable{
     public void setStatuses(int statuses) {
         this.statuses = statuses;
     }
+    
+    public String getUserName(){
+        return UserName;
+    }
+    
+    public void saveInformationTwitterAccount(){
+        try{            
+         InformationTwitterAccount information=new InformationTwitterAccount(this.getFriends(),this.getFollowers(),this.getFavorites(),this.getStatuses(),this.getLanguaje(),this.getUserName(),this.getUrlAccount());
+         FileAdmin=new NiconFileAdministrator(information,"./Config","countersAccount.npc");
+         FileAdmin.writeFileObject();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public InformationTwitterAccount readInformationTwitterAccount(){
+        try{
+           Object readFileObject = FileAdmin.readFileObject("./Config/countersAccount.npc");
+           dataUser=(InformationTwitterAccount) readFileObject;
+        }catch(Exception e){
+            System.out.println("Ocurrio un error al intentar leer el archivo");
+            e.printStackTrace();
+        }
+        return dataUser;
+    }
 
     /**
      * 
@@ -126,11 +167,6 @@ public class InformationTwitterAccount implements Serializable{
      */
     @Override
     public String toString() {
-        return "BasicDataNiconTwittAcount{" + "friends=" + friends + ", followers=" + followers + ", favorites=" + favorites + ", statuses=" + statuses + ", Languaje=" + Languaje + '}';
-    }
-    
-    
-    
-    
-    
+        return "BasicDataNiconTwittAcount{ UserName = " +UserName+ "  friends=" + friends + ", followers=" + followers + ", favorites=" + favorites + ", statuses=" + statuses + ", Languaje=" + Languaje +", URLaccount="+UrlAccount+ '}';
+    }    
 }
