@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
 import javax.swing.*;
-import org.Nicon.Personal.Data.DataContact;
-import org.Nicon.Personal.Data.DataNotes;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import org.Nicon.Personal.LibCore.Sbin.Init;
