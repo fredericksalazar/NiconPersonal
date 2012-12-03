@@ -41,7 +41,7 @@ public class GlobalConfigSystem {
         
         NameAplication="NiconPersonal";
         AlternativeName="Venus";
-        CurrentVersion="0.3.41";
+        CurrentVersion="0.3.45";
         IconsPath="/org/Nicon/Personal/GuiUser/Icons/";
         ExportPath="./exportaciones";
         HeaderFile="\n\n"
