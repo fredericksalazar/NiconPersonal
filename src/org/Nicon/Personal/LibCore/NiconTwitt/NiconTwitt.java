@@ -34,6 +34,8 @@ import twitter4j.conf.ConfigurationBuilder;
  * 
  */
 public class NiconTwitt {
+    
+    private static ResponseList messages;
 
     private RequestToken requestToken;
     private AccessToken accesToken;
@@ -67,7 +69,7 @@ public class NiconTwitt {
      */
     public void loginTwitterAccount() {
         
-        try {
+       try {
             configuration = new ConfigurationBuilder();
             configuration.setDebugEnabled(true);
             configuration.setOAuthConsumerKey(GlobalConfigSystem.getCONSUMER_KEY());
@@ -143,6 +145,18 @@ public class NiconTwitt {
         }
         return stateOP;
     }
+    
+    public static ResponseList getSentDirectMessage(){
+        try{
+           messages = twitter.getSentDirectMessages();
+            if(!messages.isEmpty()){
+                System.out.println("Listado de mensajes obtenidos Size="+messages.size());
+            }
+        }catch(TwitterException e){
+            System.out.println("No se puede conectar a Twitter.com");
+        }
+        return messages;
+    }
 
     /**
      * 
@@ -158,7 +172,7 @@ public class NiconTwitt {
     
     public void getContactList(){
         try{
-           
+            
         }catch(Exception e){
               e.printStackTrace();      
         }
