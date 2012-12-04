@@ -375,7 +375,7 @@ public class GuiAdminNotes extends JPanel implements ActionListener, MouseListen
             if ((titulo.equals("")) || (Nota.equals(""))) {
                 JOptionPane.showMessageDialog(null, "Ingrese el titulo o la descripcion de la Nota", GlobalConfigSystem.getTitleAplication(), 0);
             } else {
-                NiconNotes Nueva = new NiconNotes(titulo, Nota, NiconSystemAdmin.GetInstantTime());
+                NiconNotes Nueva = new NiconNotes(titulo, Nota, NiconSystemAdmin.getInstantTime());
                 int CreateNote = DataNotes.addNote(Nueva);
                 if (CreateNote == 0) {
                     state = true;
@@ -397,7 +397,7 @@ public class GuiAdminNotes extends JPanel implements ActionListener, MouseListen
             if ((titulo.equals("")) || (Nota.equals(""))) {
                 JOptionPane.showMessageDialog(null, "Ingrese el titulo o la descripcion de la Nota", GlobalConfigSystem.getTitleAplication(), 0);
             } else {
-                Note = new NiconNotes(titulo, Nota, NiconSystemAdmin.GetInstantTime());
+                Note = new NiconNotes(titulo, Nota, NiconSystemAdmin.getInstantTime());
                 int CreateNote = DataNotes.editNote(Note);
                 if (CreateNote == 0) {
                     state = true;
