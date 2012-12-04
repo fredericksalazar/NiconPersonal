@@ -48,7 +48,7 @@ public class GlobalConfigSystem {
                 + "Aplicación:    " + GlobalConfigSystem.getNameAplication() + "\n"
                 + "Versión:       " + GlobalConfigSystem.getCurrentVersion() + "\n"
                 + "Nombre clave:  " + GlobalConfigSystem.getAlternativeName() + "\n"
-                + "Fecha creación:" + NiconSystemAdmin.GetInstantTime() + "\n"
+                + "Fecha creación:" + NiconSystemAdmin.getInstantTime() + "\n"
                 + "--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- \n";
         
         ForegroundAplicationText=new java.awt.Color(210, 210, 210);
