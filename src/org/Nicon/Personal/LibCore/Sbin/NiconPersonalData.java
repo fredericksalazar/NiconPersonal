@@ -89,7 +89,7 @@ public class NiconPersonalData {
         try{
             sentence="delete from niconsysinfo where 1;";
             NiConection.ExecuteSentence(sentence);
-            sentence = "insert into NiconSysInfo values('"+getNameAplication()+"','"+getAlternativeName()+"','"+getAplicationVersion()+"','AlfaT1','" + NiconSystemAdmin.GetInstantTime() + "');";
+            sentence = "insert into NiconSysInfo values('"+getNameAplication()+"','"+getAlternativeName()+"','"+getAplicationVersion()+"','AlfaT1','" + NiconSystemAdmin.getInstantTime() + "');";
             NiConection.ExecuteSentence(sentence);
         }catch(Exception er){
             System.out.println("Ocurrio un error al intentar ajustar Datos de la aplicacion detail error\n");
@@ -113,7 +113,7 @@ public class NiconPersonalData {
             Data.next();
             String pass=Data.getString("Password");            
             NiConection.DisconectDB();
-            String FormatPassword=NiconSystemAdmin.EncryptationSecurityService(pass);
+            String FormatPassword=NiconSystemAdmin.encriptationService(pass);
             System.out.println("La contraseña ha sido encriptada ... ");
             NiconAdministratorDAO.SetPassWordSecret(FormatPassword, administrator.getNombres());
             System.out.println("La nueva contraseña ha sido ajustada a el administrador Value IS"+FormatPassword);            
