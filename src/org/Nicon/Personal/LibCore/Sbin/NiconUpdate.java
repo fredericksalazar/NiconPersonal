@@ -70,7 +70,7 @@ public class NiconUpdate{
          String UpdateDataBase = "create table if not exists NiconSysInfo (\nCurrentSystemName TEXT NOT NULL,\nCurrentAlternativeName TEXT NOT NULL,CurrentVersionSystem TEXT NOT NULL,ChanelDeveloper TEXT NOT NULL,dateUpdate TEXT NOT NULL)";
          String deleteoldNotes = "drop table notas;";
          String UpdateNotes = "create table if not exists Notas (\nCodigo INTEGER PRIMARY KEY AUTOINCREMENT,Titulo TEXT,Nota_Desc TEXT NOT NULL,Fecha_Gen TEXT NOT NULL)";
-         String UpdateNiconSysInfo = "insert into NiconSysInfo values('NiconPersonal','Trinity','0.1.2','AlfaT1','" + NiconSystemAdmin.GetInstantTime() + "');";
+         String UpdateNiconSysInfo = "insert into NiconSysInfo values('NiconPersonal','Trinity','0.1.2','AlfaT1','" + NiconSystemAdmin.getInstantTime() + "');";
   
         NiConection.ExecuteSentence(UpdateDataBase);
         NiConection.ExecuteSentence(UpdateNiconSysInfo);
