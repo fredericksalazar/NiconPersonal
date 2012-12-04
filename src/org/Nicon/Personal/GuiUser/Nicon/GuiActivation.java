@@ -11,6 +11,7 @@
 package org.Nicon.Personal.GuiUser.Nicon;
 
 import javax.swing.JOptionPane;
+import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
 
 /**
@@ -340,10 +341,13 @@ public class GuiActivation extends javax.swing.JFrame {
             if (nombres.equals("") || apellidos.equals("") || direccion.equals("") || ciudad.equals("") || celular.equals("") || email.equals("") || loggin.equals("") || pass.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Hay campos sin Ingresar al registro por favor verifique e intente de nuevo", "Nicon Activación", JOptionPane.ERROR_MESSAGE);
             }else{
-                NiconSystemAdmin.ActiveSystem(nombres,apellidos,direccion,ciudad,celular,email,loggin,pass);
-                setVisible(false);
+                NiconAdministrator administrator =new NiconAdministrator(nombres,apellidos,direccion,ciudad,celular,email,loggin,pass);
+                NiconSystemAdmin.activeNiconPersonal(administrator);
+                dispose();
             }
         } catch (Exception e) {
+            System.err.println("Ocurrio un error en GuiActivation.VerifyData():\n");
+            e.printStackTrace();
         }
     }
 }
