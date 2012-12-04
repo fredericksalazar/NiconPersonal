@@ -11,21 +11,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.Nicon.Personal.GuiUser.Nicon.NiconLoginSystem;
 import org.Nicon.Personal.LibCore.Sbin.DAO.NiconAdministratorDAO;
-/*
- * @author Ing Frederick Adolfo Salazar Sanchez
- * @serial NPC00003
- * @version 0.3.5
- */
 
+/**
+ * Esta clase NiconSystemAdmin es la encargada de administrar opciones solo de interes de la 
+ * aplicacion. provee metodos estaticos que ayudan al sistema a administrarse de forma efectiva
+ * su objetivo principal es servir los metodos esenciales que ayuden al sistema a manipular todas
+ * las posibles funciones criticas que el sistema requiera.
+ * @author frederick
+ */
 public class NiconSystemAdmin {
 
     private static final char[] HEXADECIMAL = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
-                                               'c', 'd', 'e', 'f'};
+        'c', 'd', 'e', 'f'};
     private static boolean StateActivationSystem = false;
-    private static boolean state;
+    private static boolean stateOP;
     private static String EncoderCodification;
     private static ResultSet Data;
-    private static NiConection conexion = new NiConection();
     private static SimpleDateFormat format;
     private static Date date;
     private static StringBuilder sb;
@@ -35,29 +36,62 @@ public class NiconSystemAdmin {
     private static NiconAdministratorDAO niconadminDAO;
     private static NiconAdministratorDAO niconadmin;
 
-    /*
-     * Este metodo es el encargado de la verificar al inicio del sistema si la aplicacion ha sido ejecutada
-     * y en caso tal si esta inicializada.
+    
+    
+    /**
+     * Este metodo estatico provee una herramienta de validacion de estado del sistema, hace uso de 
+     * la informaicon que entrega NiconAdministratorDAO para saber si existe un dueño y administrador
+     * de la suite, en caso de existir un Administrador en el sistema retorna true, en caso contrario
+     * retornara false haciendo referencia a que debe activarse el sistema.
+     * 
+     * @return boolean stado del sistema
+     * @Author Frederick Adolfo Salazar Sanchez
      */
-    public static boolean VerifyStateSystem() {
+    
+    public static boolean verifyStateSystem() {
         niconadmin = new NiconAdministratorDAO();
         return niconadmin.verifyStateNiconAdmin();
     }
+    
 
-    public static void ActiveSystem(String nombres, String apellidos, String direccion, String ciudad, String celular, String email, String loggin, String pass) {
+    /**
+     * Este metodo es el encargado de hacer el registro y activacion de la suite recibiendo
+     * parametros para su posterior registro en el backend de informacion. este registro proveera
+     * de un administrador al sistema
+     * 
+     * @param NiconAdministrator administrador
+     * @Author Frederick Adolfo Salazar Sanchez
+     */
+    public static void activeNiconPersonal(NiconAdministrator administrator) {
+
         try {
-
-            String password = EncryptationSecurityService(pass);
-            NiconAdministrator admin = new NiconAdministrator(nombres, apellidos, direccion, ciudad, celular, email, loggin, password);
-            niconadminDAO = new NiconAdministratorDAO(admin);
+            String password = EncryptationSecurityService(administrator.getPassword());
+            niconadminDAO = new NiconAdministratorDAO(administrator);
             niconadminDAO.createAdministrator();
-            NiconLoginSystem init = new NiconLoginSystem(NiconAdministrator.GetDataAdmin());
-            init.setVisible(true);
+            NiconLoginSystem initLogin = new NiconLoginSystem(NiconAdministrator.GetDataAdmin());
+            initLogin.setVisible(true);
+            niconadminDAO=null;
+            administrator=null;
         } catch (Exception e) {
-            System.out.println("Error en active system");
+            System.out.println(NiconSystemAdmin.GetInstantTime()+"\nOcurrio un error en NiconSystemAdmin.ActiveNiconPersonal():\n");
+            e.printStackTrace();
         }
     }
 
+    
+    /**
+     * Este metodo permite verificar las credenciales de ingreso de un usuario que esta intentando
+     * ingresar al sistema, solo recibe como parametro la contraseña dado que no necesita usuario.
+     * la econtraseña ingresada es encriptada en MD5 y comprobada con la almacenada en el backend
+     * si coinciden retorna un boolean con estado true y permite el ingreso del usuario en caso
+     * contrario retorna false y denega el ingreso.
+     * 
+     * 
+     * @param String InputPassword 
+     * @return boolean stateOP
+     * @Author Frederick Adolfo Salazar Sanchez
+     */
+    
     public static boolean verifyCredentialsUser(String InputPassword) {
         boolean acces = false;
         try {
@@ -81,10 +115,9 @@ public class NiconSystemAdmin {
         return acces;
     }
 
-    /*
-     * Este metodo obtiene un momento del tiempo y es formateado para usar como informacion del sistema
-     * se usa para llevar un registro de actividades y puede ser invocado desde cualquier lugar del
-     * sistema
+    /**
+     * 
+     * @return
      */
     public static String GetInstantTime() {
         String NowTime = "";
@@ -98,6 +131,11 @@ public class NiconSystemAdmin {
         return NowTime;
     }
 
+    /**
+     * 
+     * @param ToFormat
+     * @return
+     */
     public static String dateFormatSimple(Date ToFormat) {
         String SingleDate = "";
         if (ToFormat == null) {
@@ -113,10 +151,10 @@ public class NiconSystemAdmin {
         return SingleDate;
     }
 
-    /*
-     * Este metodo usa el sistema de encrptacion MD5 para darle seguridad a las contraseñas
-     * usadas en el sistema. recibe como parametro la frase a encrpitar y retorna el valor
-     * encriptado que produce el algortimo MD5
+    /**
+     * 
+     * @param Input
+     * @return
      */
     public static String EncryptationSecurityService(String Input) {
         try {
@@ -135,9 +173,9 @@ public class NiconSystemAdmin {
         return sb.toString();
     }
 
-    /*
-     * Este metodo hace el calculo de el tamaño de la pantalla. retorna un array con los datos indexado asi:
-     * WidhtScreen=0 HeightScreen=1.
+    /**
+     * 
+     * @return
      */
     public static int[] DimensionScreen() {
         int ValueDimension[] = new int[2];
@@ -148,25 +186,24 @@ public class NiconSystemAdmin {
         ValueDimension[1] = HeightScreen;
         return ValueDimension;
     }
-    
-    /*
-     * Este metodo servira para verificar sin un usuario posee o no una conexion a internet
-     * que nos permita interactuar con el Api de twitter. 
-     *  retorna boolean con el estado de la conexion.
+
+    /**
+     * 
+     * @return
      */
-    public static boolean verifyInternetConection(){
-        try{
-           String url="www.twitter.com";
-           int port=80;
-           Socket conect=new Socket(url,port);
-                if(conect.isConnected()){
-                    System.out.println("El sistema se encuentra conectado a Internet ...");
-                    state=true;
-                }
-        }catch(Exception e){
+    public static boolean verifyInternetConection() {
+        try {
+            String url = "www.twitter.com";
+            int port = 80;
+            Socket conect = new Socket(url, port);
+            if (conect.isConnected()) {
+                System.out.println("El sistema se encuentra conectado a Internet ...");
+                stateOP = true;
+            }
+        } catch (Exception e) {
             System.out.println("No se encontro conexion a internet ...");
-            state=false;
+            stateOP = false;
         }
-        return state;
+        return stateOP;
     }
 }
