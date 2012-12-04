@@ -41,7 +41,7 @@ public class ExportNiContacts {
                 + "Aplicación:    " + GlobalConfigSystem.getNameAplication() + "\n"
                 + "Versión:       " + GlobalConfigSystem.getCurrentVersion() + "\n"
                 + "Nombre clave:         " + GlobalConfigSystem.getAlternativeName() + "\n"
-                + "Fecha:         " + NiconSystemAdmin.GetInstantTime() + "\n"
+                + "Fecha:         " + NiconSystemAdmin.getInstantTime() + "\n"
                 + "\nRegistro de contactos almacenados en NiconPersonal\n";
         DirExp = "./exportaciones";
         ListContact = new ArrayList();
