@@ -1,16 +1,13 @@
-/************************************************************************
- * NiconPersonal v 0.2.1 All Rights Reserved (C) 2012 NiconSystem Inc.  *
- * Florida valle del cauca 318 437 4382 / fredefass01@gmail.com         *
- * NiconPersonal es desarrollado por NiconSystem Inc. todos los derechos*
- * reservados, la copia, distribución o comercialización sin una autori *
- * zación debida sera considerada como ilegal.                          *
- * NiconPersonal es diseñada, desarrollada y mantenida por el Ingeniero *
- * Frederick Adolfo Salazar Sanchez.                        *
- *                                                                      *
- * Esta clase NiconLogin es la encargada de administrar el incio        *
- * de sesion grafica hace uso de la clase SystemAdmin para la gestion y *
- * Verificacion de ingreso.                                             *
- * **********************************************************************/
+/**
+ * CopyRigth (C) 2013 NiconSystem Incorporated. 
+ * 
+ * NiconSystem Inc.
+ * Cll 9a#6a-09 Florida Valle del cauca Colombia
+ * 318 437 4382
+ * fredefass01@gmail.com
+ * desarrollador-mantenedor: Frederick Adolfo Salazar Sanchez.
+ */
+
 package org.Nicon.Personal.GuiUser.Nicon;
 
 import java.awt.Color;
@@ -24,33 +21,47 @@ import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 import org.Nicon.Personal.LibCore.Sbin.Init;
 import org.Nicon.Personal.LibCore.Sbin.NiconSystemAdmin;
 
-/*
- * NiconLoginSystem es la interfaz mediante la cual se le permite al usuario ingresar al frontend de NiconPersonal
- * hace uso de las clases de administracion de seguridad para la encriptacion y verificacion de los campos de ingreso
- *  
+/***
+ * NiconLogiSystem es el sistema de logeo de NiconPersonal, provee una interfaz grafica simple que ofrece un
+ * inicio rapidos, seguro y eficiente, NiconLoginSystem propone un ingreso de máximo 3 intentos en los cuales
+ * sino inicia correctamente el sistema se cerrará, NiconLoginSystem extiende Jdialog para mostrar sus 
+ * componentes graficos.
+ * 
+ * @author Frederick Adolfo Salazar Sanchez
  */
 public class NiconLoginSystem extends JDialog implements ActionListener {
 
     private NiconAdministrator DataAdmin;
+    
     private JPanel LoginPanel;
+    
     private JLabel LoginTitle;
     private JLabel NameAdmin;
     private JLabel LoginInformation;
     private JLabel AccesInformation;
+    
     private Font A1;
     private Font A2;
+    
     private JPasswordField InputPassword;
+    
     private JButton ButtonAcces;
+    
     private int CountDefError;
     private String strDefError;
     private Timer TimeShowAccesInf;
+    
     private Properties Languaje;
+    
+    private boolean accesControl;
+    private String inputPass;
 
 
-    /*
-     * Recibimos como parametro una objeto de tipo Administrador, ello para poder hacer un saludo mas personalizado
-     * la ventana de login viene sin decoracion de borde y es mas minimalista simple y rapida. se tiene como regla
-     * que llevara un contador de intentos fallidos, al momento de causar 3 intentos fallidos se cerrará la aplicacion  
+    /**
+     * El constructor por defecto debe recibir u objeto del Tipo NiconAdministrator con el cual se mostrarán 
+     * datos basicos del administrador del sistema para poder visualizarlos de forma predeterminada al inicio
+     * del sistema.
+     * @param DataAdmin 
      */
     public NiconLoginSystem(NiconAdministrator DataAdmin) {
         setSize(500, 250);
@@ -64,17 +75,16 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
         setVisible(true);
     }
 
-    /*
-     * Se incia el diseño de la interfaz gráfica de Login, sera simple pero elegante
-     * al momento de ingresar tendra solo 3 oportunidades de logeo. de lo contrario la
-     * libreta se cerrara
-     */
+    
     private void InitComponentes() {
-
+        /**
+         * se obtiene el lenguaje que usará el sistema por defecto el cual ajustará todos el lenguaje
+         * de los componentes obteniendo los valores del objeto properties cargado previamente 
+         */
         Languaje = GlobalConfigSystem.getLanguajeProperties();
 
-        A1 = new Font("Droid", 0, 45);
-        A2 = new Font("Droid Sans", 0, 20);
+        A1 = new Font("Verdana", 0, 45);
+        A2 = new Font("Verdana", 0, 20);
 
         LoginPanel = new JPanel();
         LoginPanel.setLayout(null);
@@ -129,44 +139,40 @@ public class NiconLoginSystem extends JDialog implements ActionListener {
         }
     }
 
-    /*
-     * Este metodo es el encargado de verificar la credencial de ingreso del usuario. hace uso de las librerias
-     * de NiconSystemAdmin para la verificacion de identidad.
+    /**
+     * este metodo es el encargado de validar el ingreso del usuario, obtiene el password que el usuario ha
+     * ingresado en el campo de texto y usa el API de NiconsystemAdmin para validar su acceso, en caso de que
+     * los datos ingresasdos sean nulos o no sean compatibles mostrará un mensaje de error en la parte inferior
+     * del JDialog, en caso de que el numero de intentos fallidos sea de 3 entonces cerrárá la aplicacion.
      */
     private void NiconVerifyIdentity() {
-
-        String Input = String.valueOf(InputPassword.getPassword());
-
-        if (Input.equals("")) {
-            ShowMessageLogin(1);
-        } else {
-            boolean accesControl = NiconSystemAdmin.verifyCredentialsUser(Input);
-            System.out.println("Iniciando verificación de credenciales de seguridad ....");
-
-            if (accesControl == true) {
-                System.out.println("Verificación terminada, acceso concedido ...");
-                Init.Initialize();
-                GuiNicon FrontEnd = new GuiNicon(DataAdmin);
-                FrontEnd.setVisible(true);
-                dispose();
+        inputPass = String.valueOf(InputPassword.getPassword());
+        
+            if (inputPass.equals("")) {
+                ShowMessageLogin(1);
             } else {
-                if (CountDefError == 2) {
-                    System.out.println("El acceso ha sido denegado ... el sistema terminara ahora");
-                    System.exit(0);
-                } else {
-                    System.out.println("Verficacion terminada, Acceso Denegado ...");
-                    ShowMessageLogin(0);
-                    TimeShowAccesInf.start();
-                    InputPassword.setText("");
-                    CountDefError++;
-                }
+                accesControl = NiconSystemAdmin.verifyCredentialsUser(inputPass);
+                    if (accesControl) {                    
+                            Init.Initialize();
+                            GuiNicon FrontEnd = new GuiNicon(DataAdmin);
+                            FrontEnd.setVisible(true);
+                            dispose();                   
+                    } else {
+                        if (CountDefError == 2) {
+                                System.exit(0);
+                        } else {
+                                ShowMessageLogin(0);
+                                TimeShowAccesInf.start();
+                                InputPassword.setText("");
+                                CountDefError++;
+                        }
+                    }
             }
-        }
     }
 
-    /*
-     * El metodo ShowMessageLogin es el encargado de mostrar una informacion sobre el acceso al FrontEnd, pueden darse
-     * dos casos 1 la contraseña no ingresada o contraseña invalida.
+    /**
+     * este metodo permite mostrar los mensajes de error al momento de intentar ingresar al sistema
+     * @param ErrorID 
      */
     private void ShowMessageLogin(int ErrorID) {
         if (ErrorID == 0) {
