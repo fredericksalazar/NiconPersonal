@@ -24,7 +24,6 @@ public class NiconSystemAdmin {
     private static final char[] HEXADECIMAL = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
         'c', 'd', 'e', 'f'};
     
-    private static boolean StateActivationSystem = false;
     private static boolean stateOP;
     
     private static ResultSet Data;
@@ -105,14 +104,9 @@ public class NiconSystemAdmin {
             Data.next();
             String adminPass = Data.getString("Password");
             Data.close();
-            NiConection.DisconectDB();
-            
+            NiConection.DisconectDB();            
                 if ((adminPass.equals(encriptPass))) {
                     stateOP = true;
-                    sentence = null;
-                    encriptPass = null;
-                    InputPassword = null;
-                    adminPass = null;
                 }
         } catch (Exception e) {
             System.out.println("Ocurrio un error en SecurityControlSystem()\n" + e);

@@ -1,3 +1,13 @@
+/**
+ * CopyRigth (C) 2013 NiconSystem Incorporated. 
+ * 
+ * NiconSystem Inc.
+ * Cll 9a#6a-09 Florida Valle del cauca Colombia
+ * 318 437 4382
+ * fredefass01@gmail.com
+ * desarrollador-mantenedor: Frederick Adolfo Salazar Sanchez.
+ */
+
 package org.Nicon.Personal.GuiUser.Nicon;
 
 import java.awt.*;
@@ -7,18 +17,28 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
 import org.Nicon.Personal.GuiUser.Information.GuiAbout;
 import org.Nicon.Personal.GuiUser.NiContacts.GuiContacts;
 import org.Nicon.Personal.GuiUser.Nicon.Twitt.PostTwitt;
 import org.Nicon.Personal.GuiUser.NiconNotes.GuiAdminNotes;
+import org.Nicon.Personal.LibCore.NiconTwitt.InformationTwitterAccount;
 import org.Nicon.Personal.LibCore.NiconTwitt.NiconTwitt;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
+import twitter4j.TwitterException;
 
 /*
  * @author Frederick Adolfo Salazar Sanchez
@@ -34,7 +54,7 @@ import org.Nicon.Personal.LibCore.Obj.NiconAdministrator;
 public class GuiNicon extends JFrame implements ActionListener, MouseListener, WindowListener {
 
     
-    private String ResourceImages;
+    private String iconsPath;
     private Properties Languaje;
     
     private static int IndexTab;
@@ -46,7 +66,6 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
     private Font A1;
     private Font A2;
     private Font A3;
-    private Color ForegroundColor;
     
     private JPanel DashPanel;
     private JPanel FrontPanel;
@@ -62,7 +81,6 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
     private JLabel JLNiconMail;
     private JLabel JLNiconNotes;
     private JLabel NiconInfo;
-    private JLabel NiconBackground;
     private JLabel NiconTwittInformation;
     
     private Date time;
@@ -81,19 +99,18 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
     
     private GuiContacts tabContacts;
     private NiconAdministrator NiconAdmin;
-    private NiconTwitt twitter;
+    private NiconTwitt niconTwitt;
+    private InformationTwitterAccount twitterInfo;
 
     public GuiNicon(NiconAdministrator NiconAdmin) {
-
         setSize(800, 740);
         setTitle(GlobalConfigSystem.getTitleAplication());
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
         this.NiconAdmin = NiconAdmin;
-        ResourceImages = GlobalConfigSystem.getIconsPath();
+        iconsPath = GlobalConfigSystem.getIconsPath();
         Initcomponents();
-        LoadComponents();
         LoadHomePanel();
     }
 
@@ -103,9 +120,8 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
-        ResourceImages = GlobalConfigSystem.getIconsPath();
+        iconsPath = GlobalConfigSystem.getIconsPath();
         Initcomponents();
-        LoadComponents();
         LoadHomePanel();
     }
 
@@ -144,13 +160,9 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
 
         JTabs = new JTabbedPane();
         JTabs.setBounds(10, 40, 765, 660);
-        JTabs.addTab("NiconDash", new ImageIcon(getClass().getResource(ResourceImages + "NiconDash.png")), DashPanel);
+        JTabs.addTab("NiconDash", new ImageIcon(getClass().getResource(iconsPath + "NiconDash.png")), DashPanel);
 
         this.addWindowListener(this);
-
-    }
-
-    private void LoadComponents() {
         FrontPanel.add(JTabs);
         FrontPanel.add(JCNiconOptions);
         getContentPane().add(FrontPanel);
@@ -164,115 +176,122 @@ public class GuiNicon extends JFrame implements ActionListener, MouseListener, W
      * Version:  0.1.2
      */
     private void LoadHomePanel() {
-//        twitter=new NiconTwitt();
-//        InformationTwitterAccount twitterInfo=new InformationTwitterAccount();
-//        twitter.getConfigurationAccount();
-//        twitterInfo=twitter.getAcountBasicInformation();
-        
-        NiconAdmin = NiconAdministrator.GetDataAdmin();
+        try {
+            niconTwitt=new NiconTwitt();
+            niconTwitt.accesTwitterAcount();
+            twitterInfo=niconTwitt.getInformationUserAccount();
+            
+            NiconAdmin = NiconAdministrator.GetDataAdmin();
 
-        NameAdmin = new JLabel(" " + NiconAdmin.getNombres());
-        NameAdmin.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        NameAdmin.setBounds(0, 18, 700, 58);
-        NameAdmin.setFont(A1);
+            NameAdmin = new JLabel(" " +twitterInfo.getUserName());
+            NameAdmin.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            NameAdmin.setBounds(0, 18, 700, 58);
+            NameAdmin.setFont(A1);
 
-        LastNameAdmin = new JLabel("   " + NiconAdmin.getApellidos());
-        LastNameAdmin.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        LastNameAdmin.setBounds(0, 67, 200, 30);
-        LastNameAdmin.setFont(A3);
+            LastNameAdmin = new JLabel("   " + NiconAdmin.getApellidos());
+            LastNameAdmin.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            LastNameAdmin.setBounds(0, 67, 200, 30);
+            LastNameAdmin.setFont(A3);
 
-        AlternativeName = new JLabel("   " + NiconAdmin.getCiudad());
-        AlternativeName.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        AlternativeName.setBounds(0, 97, 400, 30);
-        AlternativeName.setFont(A3);
+            AlternativeName = new JLabel("   " + NiconAdmin.getCiudad());
+            AlternativeName.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            AlternativeName.setBounds(0, 97, 400, 30);
+            AlternativeName.setFont(A3);
 
-        CurrentDate = new JLabel(format.format(time));
-        CurrentDate.setBounds(560, 18, 400, 60);
-        CurrentDate.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        CurrentDate.setFont(new Font("Verdana", 0, 55));
+            CurrentDate = new JLabel(format.format(time));
+            CurrentDate.setBounds(560, 18, 400, 60);
+            CurrentDate.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            CurrentDate.setFont(new Font("Verdana", 0, 55));
 
-        CurrentMonth = new JLabel(MontFormat.format(time));
-        CurrentMonth.setBounds(560, 75, 400, 30);
-        CurrentMonth.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        CurrentMonth.setFont(new Font("Verdana", 0, 30));
+            CurrentMonth = new JLabel(MontFormat.format(time));
+            CurrentMonth.setBounds(560, 75, 400, 30);
+            CurrentMonth.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            CurrentMonth.setFont(new Font("Verdana", 0, 30));
 
-        CurrentHour = new JLabel(HourFormat.format(time));
-        CurrentHour.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-        CurrentHour.setBounds(560, 113, 400, 30);
-        CurrentHour.setFont(new Font("Verdana", 0, 30));
+            CurrentHour = new JLabel(HourFormat.format(time));
+            CurrentHour.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+            CurrentHour.setBounds(560, 113, 400, 30);
+            CurrentHour.setFont(new Font("Verdana", 0, 30));
 
-        JBcontacts = new JButton();
-        JBcontacts.setBackground(Color.darkGray);
-        JBcontacts.setBounds(100, 200, 130, 130);
-        JBcontacts.setIcon(new ImageIcon(getClass().getResource(ResourceImages + "NiContactBT.png")));
-        JBcontacts.setToolTipText(Languaje.getProperty("TooltipJBContact"));
-        JBcontacts.addMouseListener(this);
-        JBcontacts.addActionListener(this);
+            JBcontacts = new JButton();
+            JBcontacts.setBackground(Color.darkGray);
+            JBcontacts.setBounds(100, 200, 130, 130);
+            JBcontacts.setIcon(new ImageIcon(getClass().getResource(iconsPath + "NiContactBT.png")));
+            JBcontacts.setToolTipText(Languaje.getProperty("TooltipJBContact"));
+            JBcontacts.addMouseListener(this);
+            JBcontacts.addActionListener(this);
 
-        JLNicontacts = new JLabel("  Nicontacts");
-        JLNicontacts.setForeground(GlobalConfigSystem.getForegroundAplicationText());
-        JLNicontacts.setFont(this.A2);
-        JLNicontacts.setBounds(105, 345, 200, 20);
+            JLNicontacts = new JLabel("  Nicontacts");
+            JLNicontacts.setForeground(GlobalConfigSystem.getForegroundAplicationText());
+            JLNicontacts.setFont(this.A2);
+            JLNicontacts.setBounds(105, 345, 200, 20);
 
-        JBNiconMail = new JButton();
-        JBNiconMail.setBounds(320, 200, 130, 130);
-        JBNiconMail.setBackground(Color.darkGray);
-        JBNiconMail.setToolTipText(Languaje.getProperty("TooltipJBNiconMail"));
-        JBNiconMail.setIcon(new ImageIcon(getClass().getResource(ResourceImages + "NiconMailBT.png")));
-        JBNiconMail.addMouseListener(this);
+            JBNiconMail = new JButton();
+            JBNiconMail.setBounds(320, 200, 130, 130);
+            JBNiconMail.setBackground(Color.darkGray);
+            JBNiconMail.setToolTipText(Languaje.getProperty("TooltipJBNiconMail"));
+            JBNiconMail.setIcon(new ImageIcon(getClass().getResource(iconsPath + "NiconMailBT.png")));
+            JBNiconMail.addMouseListener(this);
 
-        JLNiconMail = new JLabel(" NiconMail");
-        JLNiconMail.setForeground(GlobalConfigSystem.getForegroundAplicationText());
-        JLNiconMail.setFont(this.A2);
-        JLNiconMail.setBounds(335, 345, 200, 20);
+            JLNiconMail = new JLabel(" NiconMail");
+            JLNiconMail.setForeground(GlobalConfigSystem.getForegroundAplicationText());
+            JLNiconMail.setFont(this.A2);
+            JLNiconMail.setBounds(335, 345, 200, 20);
 
-        JBNiconNotes = new JButton();
-        JBNiconNotes.setBackground(Color.darkGray);
-        JBNiconNotes.setBounds(545, 200, 130, 130);
-        JBNiconNotes.setToolTipText(Languaje.getProperty("TooltipJBNiconNotes"));
-        JBNiconNotes.setIcon(new ImageIcon(getClass().getResource(ResourceImages + "NiconNotesBT.png")));
-        JBNiconNotes.addMouseListener(this);
-        JBNiconNotes.addActionListener(this);
+            JBNiconNotes = new JButton();
+            JBNiconNotes.setBackground(Color.darkGray);
+            JBNiconNotes.setBounds(545, 200, 130, 130);
+            JBNiconNotes.setToolTipText(Languaje.getProperty("TooltipJBNiconNotes"));
+            JBNiconNotes.setIcon(new ImageIcon(getClass().getResource(iconsPath + "NiconNotesBT.png")));
+            JBNiconNotes.addMouseListener(this);
+            JBNiconNotes.addActionListener(this);
 
-        JLNiconNotes = new JLabel(" NiconNotes");
-        JLNiconNotes.setForeground(GlobalConfigSystem.getForegroundAplicationText());
-        JLNiconNotes.setBounds(555, 345, 200, 20);
-        JLNiconNotes.setFont(this.A2);
-        
-        JBNiconTwitt=new JButton();
-        JBNiconTwitt.setToolTipText(Languaje.getProperty("TooltipJBNiconTwitt"));
-        JBNiconTwitt.setIcon(new javax.swing.ImageIcon(getClass().getResource(ResourceImages+"NiconTwitt.png")));
-        JBNiconTwitt.addActionListener(this);
-        JBNiconTwitt.setBounds(690,550,60, 60);
-        
-//        NiconTwittInformation=new JLabel(twitterInfo.getStatuses()+" Tweets / "+twitterInfo.getFriends()+" Siguiendo / "+twitterInfo.getFollowers()+" Seguidores / "+twitterInfo.getLanguaje());
-//        NiconTwittInformation.setForeground(GlobalConfigSystem.getForegroundDashPanel());
-//        NiconTwittInformation.setFont(this.A2);
-//        NiconTwittInformation.setBounds(10,560,800,25);
+            JLNiconNotes = new JLabel(" NiconNotes");
+            JLNiconNotes.setForeground(GlobalConfigSystem.getForegroundAplicationText());
+            JLNiconNotes.setBounds(555, 345, 200, 20);
+            JLNiconNotes.setFont(this.A2);
+            
+            JBNiconTwitt=new JButton();
+            JBNiconTwitt.setToolTipText(Languaje.getProperty("TooltipJBNiconTwitt"));
+            JBNiconTwitt.setIcon(new javax.swing.ImageIcon(getClass().getResource(iconsPath+"NiconTwitt.png")));
+            JBNiconTwitt.addActionListener(this);
+            JBNiconTwitt.setBounds(690,550,60, 60);
+            
+    //        NiconTwittInformation=new JLabel(twitterInfo.getStatuses()+" Tweets / "+twitterInfo.getFriends()+" Siguiendo / "+twitterInfo.getFollowers()+" Seguidores / "+twitterInfo.getLanguaje());
+    //        NiconTwittInformation.setForeground(GlobalConfigSystem.getForegroundDashPanel());
+    //        NiconTwittInformation.setFont(this.A2);
+    //        NiconTwittInformation.setBounds(10,560,800,25);
 
-        NiconInfo = new JLabel("NiconPersonal is powered By NiconSystem Inc.");
-        NiconInfo.setForeground(Color.lightGray);
-        NiconInfo.setFont(new Font("Verdana", 2, 10));
-        NiconInfo.setBounds(8, 598, 500, 22);
+            NiconInfo = new JLabel("NiconPersonal is powered By NiconSystem Inc.");
+            NiconInfo.setForeground(Color.lightGray);
+            NiconInfo.setFont(new Font("Verdana", 2, 10));
+            NiconInfo.setBounds(8, 598, 500, 22);
 
-        InitUpdateTime();
-        
-        DashPanel.add(NameAdmin);
-        DashPanel.add(LastNameAdmin);
-        DashPanel.add(AlternativeName);
-        DashPanel.add(JBcontacts);
-        DashPanel.add(JLNicontacts);
-        DashPanel.add(JBNiconMail);
-        DashPanel.add(JLNiconMail);
-        DashPanel.add(JBNiconNotes);
-        DashPanel.add(JLNiconNotes);
-        DashPanel.add(NiconInfo);
-        DashPanel.add(CurrentDate);
-        DashPanel.add(CurrentHour);
-        DashPanel.add(CurrentMonth);
-        DashPanel.add(NiconInfo);
-        DashPanel.add(JBNiconTwitt);
-//        DashPanel.add(NiconTwittInformation);
+            InitUpdateTime();
+            
+            DashPanel.add(NameAdmin);
+            DashPanel.add(LastNameAdmin);
+            DashPanel.add(AlternativeName);
+            DashPanel.add(JBcontacts);
+            DashPanel.add(JLNicontacts);
+            DashPanel.add(JBNiconMail);
+            DashPanel.add(JLNiconMail);
+            DashPanel.add(JBNiconNotes);
+            DashPanel.add(JLNiconNotes);
+            DashPanel.add(NiconInfo);
+            DashPanel.add(CurrentDate);
+            DashPanel.add(CurrentHour);
+            DashPanel.add(CurrentMonth);
+            DashPanel.add(NiconInfo);
+            DashPanel.add(JBNiconTwitt);
+    //        DashPanel.add(NiconTwittInformation);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GuiNicon.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GuiNicon.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(GuiNicon.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

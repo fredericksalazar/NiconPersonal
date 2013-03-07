@@ -1,3 +1,14 @@
+/**
+ * CopyRigth (C) 2013 NiconSystem Incorporated. 
+ * 
+ * NiconSystem Inc.
+ * Cll 9a#6a-09 Florida Valle del cauca Colombia
+ * 318 437 4382
+ * fredefass01@gmail.com
+ * desarrollador-mantenedor: Frederick Adolfo Salazar Sanchez.
+ */
+
+
 package org.Nicon.Personal.LibCore.Obj;
 
 import org.Nicon.Personal.LibCore.Sbin.NiConection;
@@ -5,7 +16,6 @@ import java.sql.ResultSet;
 
 public class NiconAdministrator {
 
-    private static int StateAdministrator;
     private static String sentence;
     private String Nombres;
     private String Apellidos;
@@ -15,7 +25,6 @@ public class NiconAdministrator {
     private String Email;
     private String Loggin;
     private String Password;
-    private NiConection conexion = new NiConection();
     private static ResultSet DataAdmin;
 
     public NiconAdministrator(String Nombres, String Apellidos, String Direccion, String Ciudad, String Celular, String Email, String Loggin, String Password) {

@@ -1,28 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * CopyRigth (C) 2013 NiconSystem Incorporated. 
+ * 
+ * NiconSystem Inc.
+ * Cll 9a#6a-09 Florida Valle del cauca Colombia
+ * 318 437 4382
+ * fredefass01@gmail.com
+ * desarrollador-mantenedor: Frederick Adolfo Salazar Sanchez.
  */
+
 package org.Nicon.Personal.LibCore.Sbin;
 
 import org.Nicon.Personal.Data.DataContact;
 import org.Nicon.Personal.Data.DataNotes;
-import org.Nicon.Personal.LibCore.NiconTwitt.NiconTwitt;
 
 /**
- *
+ * Este es la clase encargada de inicializar componentes base del sistema, ademas se encarga de verficar
+ * los archivos de configuracion del sistema.
  * @author frederick
  */
 public class Init {
-    
-    private static NiconTwitt TwitterInit;
-        
+            
     public static void Initialize(){
-        System.out.println("Iniciando interfaces de operacion ...");
-        TwitterInit=new NiconTwitt();
+        /**
+         * se inician los vectores de datos que almacenaran la informacion importante del sistema en memoria
+         */
         DataContact.init();
         DataNotes.Init();
-        NiconSystemAdmin.verifyInternetConection();
-        NiconTwitt.searchUser("@Juancarlos");
     }
     
 }

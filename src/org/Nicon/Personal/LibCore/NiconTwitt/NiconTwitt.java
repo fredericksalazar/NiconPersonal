@@ -1,23 +1,30 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * CopyRigth (C) 2013 NiconSystem Incorporated. 
+ * 
+ * NiconSystem Inc.
+ * Cll 9a#6a-09 Florida Valle del cauca Colombia
+ * 318 437 4382
+ * fredefass01@gmail.com
+ * desarrollador-mantenedor: Frederick Adolfo Salazar Sanchez.
  */
+
 package org.Nicon.Personal.LibCore.NiconTwitt;
 
 import java.awt.Desktop;
+import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import org.Nicon.Personal.LibCore.Sbin.GlobalConfigSystem;
 import org.Nicon.Personal.LibCore.Sbin.NiconFileAdministrator;
+
 import twitter4j.AccountSettings;
-import twitter4j.AccountTotals;
 import twitter4j.DirectMessage;
 import twitter4j.ResponseList;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -35,62 +42,93 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public class NiconTwitt {
     
+    private final static String PATH_CONFIG_FILE="./Config/TCA.npc";
+    
     private static ResponseList messages;
+    private static DirectMessage SendMessage;
 
     private RequestToken requestToken;
     private AccessToken accesToken;
+    private static Twitter twitter;
+    private TwitterFactory factory;
+    private ConfigurationBuilder configuration;    
+    private AccountSettings settings;
+    private User user;
+    
     private NiconFileAdministrator NiconFileAdmin;
     private InformationTwitterAccount basicDataAccount;
     private TwitterConfigAcount tca;
-    private static Twitter twitter;
-    private TwitterFactory factory;
-    private ConfigurationBuilder configuration;
+        
     private static boolean stateOP;
-    private AccountTotals totals;
-    private AccountSettings settings;
-    private ArrayList contactsTwitter;
     private Iterator iter;
+    
+    private int controlAcces=0;
 
     /**
      * 
      */
-    public NiconTwitt() {
+    public NiconTwitt() throws TwitterException, IOException, URISyntaxException {
         NiconFileAdmin = new NiconFileAdministrator();
-        getConfigurationAccount();
-        getInformationUserAccount();
+    }
+    
+     /**
+     * Este metodo se encarga de obtener la configuracion de el AccesToken para
+     * poder conectarse con el servicio de twiiter, en caso de no encontrar el archivo
+     * de configuracion llama al metodo encargado de obtener la autorizacion del usuario
+     * para el uso de su cuenta twitter. 
+     */    
+    public void accesTwitterAcount() throws TwitterException, IOException, URISyntaxException {
+        
+        /**
+         * se verifica la existencia el archivo Twitter config Acount que define la configuracion de acceso
+         * a la cuenta de Twitter definida posteriormente, en caso de que dicho archivo no se encuentre en 
+         * el path de configuraciones, se procede a obtener la autorizacion del usuario para el acceso a su
+         * cuenta.
+         */
+        if(controlAcces==0){
+           if (NiconFileAdmin.verifyFileExistSimple("TCA.npc", "./Config")) {
+                tca=(TwitterConfigAcount) NiconFileAdmin.readFileObject(PATH_CONFIG_FILE);
+                accesToken=tca.getDataAccessToken();
+                    configuration = new ConfigurationBuilder();
+                    configuration.setDebugEnabled(true);
+                    configuration.setOAuthConsumerKey(GlobalConfigSystem.getCONSUMER_KEY());
+                    configuration.setOAuthConsumerSecret(GlobalConfigSystem.getCONSUMER_SECRET());
+                    configuration.setOAuthAccessToken(accesToken.getToken());
+                    configuration.setOAuthAccessTokenSecret(accesToken.getTokenSecret());
+                    factory = new TwitterFactory(configuration.build());
+                    twitter = factory.getInstance();
+                    controlAcces++;
+            } else {
+                loginTwitterAccount();
+            }    
+        }               
     }
 
     /**
-     * Este es el metodo que permite el registro y Login de un usuario de NiconPersonal a la API
-     * de twitter. hace uso de la libreria Twitter4J que a su vez implementa el protocolo de 
-     * registro denominado OAuth. toma la configracion proveniente de Api.twiiter.com y la guarda
-     * en el archivo de configuracion de cuentas en ./Config
+     * Este metodo permite que un usuario administrador de NiconPersonal pueda darle permisos a NiconPersonal para 
+     * usar su informacion de twitter (logea a NiconPersonal con su cuenta de twitter, loginTwitterAccount() hace 
+     * uso de la libreria Twitter4j  que usa el API de Twitter, este proceso hace uso del CONSUMER_KEY y
+     * CONSUMER_SECRET para obtener la configuracion basica de NiconPersonal para Twitter, posteriormente y haciendo 
+     * uso de OAuth obtiene el denominado token y el tokenScret que serán usados en la configuracion de acceso al
+     * sistema
      * 
+     * @throws TwitterException
+     * @throws IOException
+     * @throws URISyntaxException 
      */
-    public void loginTwitterAccount() {
-        
-       try {
+    private void loginTwitterAccount() throws TwitterException, IOException, URISyntaxException {       
             configuration = new ConfigurationBuilder();
             configuration.setDebugEnabled(true);
             configuration.setOAuthConsumerKey(GlobalConfigSystem.getCONSUMER_KEY());
             configuration.setOAuthConsumerSecret(GlobalConfigSystem.getCONSUMER_SECRET());
             twitter = new TwitterFactory(configuration.build()).getInstance();
             requestToken = twitter.getOAuthRequestToken();
-            System.out.println("Obtenido request token.");
-            System.out.println("Request token: " + requestToken.getToken());
-            System.out.println("Request token secret: " + requestToken.getTokenSecret());
             Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
             String Pin = JOptionPane.showInputDialog("Ingrese por favor el pin obtenido:");
             accesToken = twitter.getOAuthAccessToken(requestToken, Pin);
-            System.out.println("Obtenido el access token.");
-            System.out.println("Access token: " + accesToken.getToken());
-            System.out.println("Access token secret: " + accesToken.getTokenSecret());
-            TwitterConfigAcount tca = new TwitterConfigAcount(accesToken);
+            tca = new TwitterConfigAcount(accesToken);
             NiconFileAdmin = new NiconFileAdministrator(tca, "./Config", "TCA.npc");
-            NiconFileAdmin.writeFileObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            NiconFileAdmin.writeFileObject();               
     }
 
     /**
@@ -101,28 +139,23 @@ public class NiconTwitt {
      * @param status
      * @return  
      */
-    public static boolean updateStatus(String status) {
-        if (status != null) {
-            try {
-                Status updateStatus = twitter.updateStatus(status);
-                stateOP = true;
-            } catch (TwitterException ex) {
-                Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
-                stateOP = false;
-            }
+    public  boolean updateStatus(String status) throws TwitterException {
+        if (status != null) {            
+                twitter.updateStatus(status);
+                stateOP = true;            
         }
         return stateOP;
     }
     
-    public static boolean deleteStatus(long id){
-        try{
-            Status destroyStatus = twitter.destroyStatus(id);
-            stateOP=true;
-        }catch(Exception e){
-            System.out.println("Ocurrio un error en NiconTwitt.deleteStatus(Long id) detail"+e.getStackTrace());
-            stateOP=false;
-            
-        }
+    /**
+     * permite eliminar un status de su cuenta de twitter.
+     * @param id
+     * @return
+     * @throws TwitterException 
+     */
+    public  boolean deleteStatus(long id) throws TwitterException{        
+            twitter.destroyStatus(id);
+            stateOP=true;        
         return stateOP;
     }
     
@@ -130,71 +163,28 @@ public class NiconTwitt {
      * Este metodo permite enviar un mensaje directo a un usuario de twitter, recibe como
      * parametros el userName y el Mensaje a enviar.
      */
-    public static boolean sendDirectMessage(String UserName,String Message){
-        try{
-            System.out.println("Inciando evio de mensaje a twitter ...");
-            DirectMessage SendMessage = twitter.sendDirectMessage(UserName, Message);
-            System.out.println("Mensaje enviado correctamente ...");
+    public boolean sendDirectMessage(String UserName,String Message) throws TwitterException{
+            SendMessage = twitter.sendDirectMessage(UserName, Message);
             SendMessage.getId();
             SendMessage.getRecipient();
             stateOP=true;
             System.out.println("Message Details: \n"+SendMessage.getId()+"/ "+SendMessage.getCreatedAt()+" / "+SendMessage.getSenderScreenName()+"\n"+SendMessage.getText());
-          }catch(Exception e){
-            System.out.println("Ocurrio el siguiente error y el mensaje no se envio: \n"+ e);
-            stateOP=false;
-        }
+          
         return stateOP;
     }
     
-    public static ResponseList getSentDirectMessage(){
-        try{
-           messages = twitter.getSentDirectMessages();
-            if(!messages.isEmpty()){
-                System.out.println("Listado de mensajes obtenidos Size="+messages.size());
-            }
-        }catch(TwitterException e){
-            System.out.println("No se puede conectar a Twitter.com");
-        }
-        return messages;
-    }
-
     /**
-     * 
+     * este metodo permite obtener un listado con todos los mensajes directos que el usuario ha recibido en su cuenta.
+     * @return 
      */
-    public void getTimeLine() {
-        try {
-            int index=0;
-            ResponseList<twitter4j.Status> homeTimeline = twitter.getHomeTimeline();            
-        } catch (Exception ex) {
-            Logger.getLogger(NiconTwitt.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void getContactList(){
-        try{
-            
-        }catch(Exception e){
-              e.printStackTrace();      
-        }
-//        return contactsTwitter;
-    }
-    
-    public static boolean searchUser(String email){
-        try{
-            ResponseList<User> searchUsers = twitter.searchUsers(email,20);
-                if(searchUsers!=null){
-                    User get = searchUsers.get(0);
-                    System.out.println(get.getName());
-                }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return stateOP;
+    public ResponseList getSentDirectMessage() throws TwitterException{        
+            messages = twitter.getSentDirectMessages();                   
+            return messages;
     }
 
     /**
      * Este metodo se encarga de obtener la informacion basica de la cuenta del usuario, informacion
-     * basica que puede ser mostrada en el panel de cuentas de NiconTwitt. la informacion obtenida
+     * basica que puede ser mostrada en el panel de cuentas de NiconTwitt la informacion obtenida
      * es acerca de cuantos seguidores posee un determinado usuario, cuantos amigos tiene, cuantos
      * favoritos a marcado entre otros.
      * 
@@ -202,23 +192,11 @@ public class NiconTwitt {
      * @return ArrayList con todos los datos obtenidos de la cuenta
      *
      */
-    public InformationTwitterAccount getInformationUserAccount() {
-        try {
+    public InformationTwitterAccount getInformationUserAccount() throws TwitterException {        
             settings=twitter.getAccountSettings();
-            User user = twitter.verifyCredentials();
-            int friendsCount = user.getFriendsCount();
-            int followersCount = user.getFollowersCount();
-            int favouritesCount = user.getFavouritesCount();
-            int statusesCount = user.getStatusesCount();
-            String lang = user.getLang();
-            String screenName = user.getScreenName();
-            String uRL = user.getURL();
-            basicDataAccount=new InformationTwitterAccount(friendsCount,followersCount,favouritesCount,statusesCount,lang,screenName,uRL);
-            basicDataAccount.saveInformationTwitterAccount();
-            System.out.println(basicDataAccount.toString());
-        } catch (Exception e) {
-            
-        } 
+            user = twitter.verifyCredentials();
+            basicDataAccount=new InformationTwitterAccount(user.getFriendsCount(),user.getFollowersCount(),user.getFavouritesCount(),user.getStatusesCount(),user.getLang(),user.getScreenName(),user.getURL());
+            basicDataAccount.saveInformationTwitterAccount();        
         return basicDataAccount;
     }
     
@@ -229,35 +207,5 @@ public class NiconTwitt {
         return basicDataAccount;
     }
 
-    /*
-     * Este metodo se encarga de obtener la configuracion de el AccesToken para
-     * poder conectarse con el servicio de twiiter. en caso de no encontrar el archivo
-     * de configuracion llama al metodo encargado de obtener la autorizacion del usuario
-     * para el uso de su cuenta twitter.
-     * 
-     * 
-     */
-    public void getConfigurationAccount() {
-        try {            
-            System.out.println("Comprobando configuracion de Acceso a cuenta de twiter ...");
-            if (NiconFileAdmin.verifyFileExistSimple("TCA.npc", "./Config")) {
-                tca=(TwitterConfigAcount) NiconFileAdmin.readFileObject("./Config/TCA.npc");
-                accesToken=tca.getDataAccessToken();
-                configuration = new ConfigurationBuilder();
-                configuration.setDebugEnabled(true);
-                configuration.setOAuthConsumerKey(GlobalConfigSystem.getCONSUMER_KEY());
-                configuration.setOAuthConsumerSecret(GlobalConfigSystem.getCONSUMER_SECRET());
-                configuration.setOAuthAccessToken(accesToken.getToken());
-                configuration.setOAuthAccessTokenSecret(accesToken.getTokenSecret());
-                factory = new TwitterFactory(configuration.build());
-                twitter = factory.getInstance();
-                System.out.println("Configuracion terminada exitosamente ....");
-            } else {
-                loginTwitterAccount();
-            }
-        }  catch(NullPointerException ne){
-                System.out.println("El AccesToken hesta deteriorado, se cargara uno nuevo ...");
-                loginTwitterAccount();
-            }
-    }
+   
 }
